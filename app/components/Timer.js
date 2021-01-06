@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 
-export default class Detail extends React.Component{
+export default class Timer extends React.Component{
     static navigationOptions = {title: 'Timer'};
 
     render(){const NewTimer =(props)=>{

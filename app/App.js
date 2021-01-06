@@ -1,17 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Timer from "./components/Timer"
+import Questionnaire from "./components/Questionnaire"
 
 
-  const Stack = createStackNavigator({
-    Timer: { screen: Timer },
-  });
-  
-  const App = createAppContainer(Stack);
-  export default App;
+const Stack = createStackNavigator({
+  Questionnaire: { screen: Questionnaire},
+  Timer: { screen: Timer },
+});
+
+const App = createAppContainer(Stack);
+export default App;
 
 
 const styles = StyleSheet.create({
