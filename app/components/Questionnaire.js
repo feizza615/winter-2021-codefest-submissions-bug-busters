@@ -41,7 +41,7 @@ export default class Questionnaire extends React.Component{
 
    render(){
        const { navigate } = this.props.navigation; //props comes from App.js
-       let list = [];
+       let list = []; //array variable
        for(let i=0;i<this.state.breaks*2+1;i++){
           if(i%2==0){
              list.push(this.state.workTimes)

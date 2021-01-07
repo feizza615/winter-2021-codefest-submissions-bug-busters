@@ -26,7 +26,7 @@ export default class Timer extends React.Component{
             clearInterval(x);
             setTimeLeft("done");
             }
-            else{
+            else{ 
             i++;
             then= props.newtime[i]*60*1000+Date.now() //resets timer
             setTimeLeft("switch what you are doing")
@@ -62,7 +62,7 @@ export default class Timer extends React.Component{
     );}
     
     var newtime1 = new Date("Jan 4, 2021 21:00:00"); //9pm today
-    var timearray=[0.1,0.1,0.1]
+    var timearray=[0.1,0.1,0.1] //change this array to Matthew's 
     return (
       <View style={styles.container}>
         <TimerSetup time={newtime1.toLocaleString()}/>
