@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity, TextInput, Text, View, Button } from 'react-native';
+import { StyleSheet, TouchableOpacity, TextInput, Text, View, Button , } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker'
 export default class Questionnaire extends React.Component{
    static navigationOptions = {title: 'Questionnaire'};
