@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, TextInput, Text, View, Button } from 'react-native';
-
-export default class Questionnaire extends React.Component{ 
+import DropDownPicker from 'react-native-dropdown-picker'
+export default class Questionnaire extends React.Component{
    static navigationOptions = {title: 'Questionnaire'};
    state = {
     hours: 0,
@@ -53,21 +53,28 @@ export default class Questionnaire extends React.Component{
        return(
         <>
         <View style = {styles.container}>
-           <TextInput style = {styles.input}
-          keyboardType="numeric"
-              underlineColorAndroid = "transparent"
-              placeholder = "Enter number of hours"
-              placeholderTextColor = "#9a73ef"
-              autoCapitalize = "none"
-              onChangeText = {this.handleHours}/>
-           <TextInput style = {styles.input}
-          keyboardType="numeric"
-              underlineColorAndroid = "transparent"
-              placeholder = "Enter number of minutes"
-              placeholderTextColor = "#9a73ef"
-              autoCapitalize = "none"
-              onChangeText = {this.handleMins}/>
+        <DropDownPicker
+        items={[
+{label: '45 mins', value: 45,},
+{label: '1 hour', value: 60, },
+{label: '1 hour 15 mins', value: 75,},
+{label: '1 hour 30 mins', value: 90,},
+{label: '1 hour 45 mins', value: 105,},
+{label: '2 hours', value: 120,},
+{label: '2 hour 15 mins', value: 135,},
+{label: '2 hour 30 mins', value: 150,},
+]}
 
+containerStyle={{height: 40}}
+dropDownStyle={{marginTop: 2}}
+        placeholder="Select number of minutes"
+     //    items={this.state.mins}
+        onChangeItem={(item)=>{this.setState({
+          hours:parseInt(Math.floor(item.value/60)),
+          mins:parseInt(item.value%60)
+        })
+     }}
+     />
            <TextInput style = {styles.input}
           keyboardType="numeric"
               underlineColorAndroid = "transparent"
@@ -96,7 +103,7 @@ export default class Questionnaire extends React.Component{
         <Text>
         {list}
         </Text>
-        
+
            <View style = {styles.container}>
                <Button
                   title= "Go to Timer Screen"
@@ -104,6 +111,7 @@ export default class Questionnaire extends React.Component{
               />
            </View>
            </>
+
        )
    }
 }
