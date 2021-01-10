@@ -6,6 +6,7 @@ export default class Timer extends React.Component{
     static navigationOptions = {title: 'Timer'};
 
     render(){const NewTimer =(props)=>{
+    //if (props.start){ //for connecting button
     const [timeLeft, setTimeLeft]= useState("Hasn't started"); //initializes timer text
     var i=0 //counter of number of sessions
     var then= props.newtime[i]*60*1000+Date.now() //finds end of first timer time (in milliseconds)
@@ -26,7 +27,7 @@ export default class Timer extends React.Component{
             clearInterval(x);
             setTimeLeft("done");
             }
-            else{ 
+            else{
             i++;
             then= props.newtime[i]*60*1000+Date.now() //resets timer
             setTimeLeft("switch what you are doing")
@@ -41,7 +42,7 @@ export default class Timer extends React.Component{
     return(
         <Text>{timeLeft}</Text>
     )
-    }
+    }//}//for connecting button
 
     //creates some text and a button
     const TimerSetup = (props) => {
@@ -52,7 +53,8 @@ export default class Timer extends React.Component{
         <Button
         onPress={()=>{
             //insert make the button actually start the timer
-            setTime(props.time);
+            setTime(1);
+            //var start=true;//for connecting button
 
         }}
         disabled={Boolean(getTime)}
@@ -60,13 +62,22 @@ export default class Timer extends React.Component{
         />
         </>
     );}
-    
+
     var newtime1 = new Date("Jan 4, 2021 21:00:00"); //9pm today
-    var timearray=[0.1,0.1,0.1] //change this array to Matthew's 
+    var timearray=[0.1,0.1,0.1] //change this array to Matthew's
+    const { navigate, state } =this.props.navigation;
+    //var start = false; //for connecting button
+    //, start={start}/> //for connecting button (put in <Newtimer>)
     return (
+
       <View style={styles.container}>
         <TimerSetup time={newtime1.toLocaleString()}/>
-        <NewTimer newtime={timearray}/>
+        <NewTimer newtime={state.params.listoftimes}/>
+        <Button
+           title= "Go to Checklist Screen"
+           onPress={() => navigate('Checklist')}
+
+       />
         <StatusBar style="auto" />
       </View>
     );}
