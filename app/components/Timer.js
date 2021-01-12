@@ -3,6 +3,8 @@ import React, {useState, useEffect} from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import useInterval from '@use-it/interval';
 import Notification from './Notification';
+import SlidingUpPanel from 'rn-sliding-up-panel';
+import Checklist from './Checklist';
 
 var isNotified = false;
 
@@ -32,6 +34,13 @@ export default class Timer extends React.Component{
            onPress={() => navigate('Checklist')}
 
        />
+        <Button title='Show panel' onPress={() => this._panel.show()} />
+        <SlidingUpPanel ref={c => this._panel = c}>
+          <View style={styles.container}>
+            <Checklist/>
+            <Button title='Hide' onPress={() => this._panel.hide()} />
+          </View>
+        </SlidingUpPanel>
         <StatusBar style="auto" />
         </View>
       )
