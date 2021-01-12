@@ -58,17 +58,17 @@ const NewTimer =(props)=>{
         setTimeLeft(timertext);
       },1000); //the 1000 is what makes it repeat every second
     return () => clearInterval(x);},[buttonClicked]);
-
+  //{(i%2) ? "take a break"  : "do work!"} //this will work when i is a state
   return(
     <>
       <Button
         onPress={()=>{
           setButtonClicked(!buttonClicked);
         }}
-        disabled{buttonClicked}
+        disabled={buttonClicked}
         title={buttonClicked ? "Pause" : "Start"}
       />
-      <Text>{timeLeft} ShouldStart: {buttonClicked.toString()}</Text>
+      <Text>{timeLeft} </Text>
     </>
   )
 }
