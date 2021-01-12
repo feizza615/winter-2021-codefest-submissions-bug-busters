@@ -2,10 +2,21 @@ import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import useInterval from '@use-it/interval';
+import Notification from './Notification';
 
+var isNotified = false;
+
+function NotifyUser(){
+  if(isNotified==true){
+   isNotified = false;
+   Notification();
+  }
+ return null;
+}
 export default class Timer extends React.Component{
     static navigationOptions = {title: 'Timer'};
     render(){
+
       const { navigate, state } =this.props.navigation;
       let listoftimes=state.params.listoftimes.map(min=>min*60)//mins to seconds
       let sum = listoftimes.reduce(
@@ -46,15 +57,17 @@ const NewTimer =(props)=>{
       setButtonClicked(false)
       //maybe clearInterval?
     }
-    else{ //when switching to next timer
+    else{ //when switching to next timer HERERERER
+      isNotified=true;
       setSeconds(props.listoftimes[i+1])
       setI(i+1)
     }
 
   },1000)//makes it run every second
 
-return(
+  return(
     <>
+      <NotifyUser/>
       <Button
         onPress={()=>{
           setButtonClicked(!buttonClicked);
@@ -65,8 +78,10 @@ return(
       <Text>{timeLeftCalculator(seconds)} </Text>
       <Text>{timeAlert} </Text>
       <ProgressBar i={i}/>
+      
     </>
   )
+
 }
 
 const ProgressBar=(props)=>{

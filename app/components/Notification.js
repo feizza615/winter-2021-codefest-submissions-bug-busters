@@ -14,18 +14,14 @@ Notifications.setNotificationHandler({
 var token;
 
 export default function Notification() {
-
   const [expoPushToken, setExpoPushToken] = useState('');
     const [notification, setNotification] = useState(false);
     const notificationListener = useRef();
     const responseListener = useRef();
-    useEffect(() =>{
-      let mounted =true;
-      if(mounted){
-        Notification();
-      }
-      return() => mounted =false;
-    },[]);
+
+    //Calling this function sends the actual Notification:
+    SendPushNotification();
+
     useEffect(() => {
       registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
   
@@ -49,7 +45,7 @@ export default function Notification() {
     return null;
         }
 // Can use this function below, OR use Expo's Push Notification Tool-> https://expo.io/notifications
-async function SendPushNotification() {
+function SendPushNotification() {
   const message = {
     to: token,
     sound: 'default',
@@ -58,7 +54,7 @@ async function SendPushNotification() {
     data: { data: 'goes here' },
   };
 
-  await  fetch('https://exp.host/--/api/v2/push/send', {
+    fetch('https://exp.host/--/api/v2/push/send', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
