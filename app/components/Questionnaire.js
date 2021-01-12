@@ -1,7 +1,7 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity, TextInput, Text, View, Button } from 'react-native';
+import { StyleSheet, TouchableOpacity, TextInput, Text, View,ScrollView, Button } from 'react-native';
 
-export default class Questionnaire extends React.Component{ 
+export default class Questionnaire extends React.Component{
    static navigationOptions = {title: 'Questionnaire'};
    state = {
     hours: 0,
@@ -52,7 +52,7 @@ export default class Questionnaire extends React.Component{
        }
        return(
         <>
-        <View style = {styles.container}>
+        <ScrollView style = {styles.container}>
            <TextInput style = {styles.input}
           keyboardType="numeric"
               underlineColorAndroid = "transparent"
@@ -89,18 +89,19 @@ export default class Questionnaire extends React.Component{
               }>
               <Text style = {styles.submitButtonText}> Submit </Text>
            </TouchableOpacity>
-        </View>
+        </ScrollView>
         <Text>
         {this.state.workTimes}
         </Text>
         <Text>
         {list}
         </Text>
-        
+
            <View style = {styles.container}>
                <Button
                   title= "Go to Timer Screen"
-                  onPress={() => navigate('Timer')}
+                  onPress={() => navigate('Timer', {listoftimes: list})}
+
               />
            </View>
            </>
