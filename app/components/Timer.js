@@ -4,78 +4,88 @@ import { Button, StyleSheet, Text, View } from 'react-native';
 
 export default class Timer extends React.Component{
     static navigationOptions = {title: 'Timer'};
-    state={
-      buttonclicked: false
-    }
     render(){
-    var newtime1 = new Date("Jan 4, 2021 21:00:00"); //9pm today
-    const { navigate, state } =this.props.navigation;
-    var startTimer = false; //for connecting button
-
-    return (
-      <View style={styles.container}>
-        <Text> Timer from now to {newtime1.toLocaleString()} </Text>
-        <Button
-          onPress={()=>{
-            this.setState({ buttonclicked: true });
-            startTimer=true;
-          }}
-          disabled={this.state.buttonclicked}
-          title={this.state.buttonclicked ? "happy studying:)" : "Click to start"}
-        />
-        <NewTimer newtime={state.params.listoftimes} startTimer={true}/>
+      const { navigate, state } =this.props.navigation;
+      let listoftimes=state.params.listoftimes.map(min=>min*60)
+      let end= Date.now()// +sum*60*1000 //insert func that gets end of array
+      return(
+        <View style={styles.container}>
+        <Text> Study session until {end.toLocaleString()} </Text>
+        <NewTimer listoftimes={listoftimes}/>
         <Button
            title= "Before you start, make a to do list!"
            onPress={() => navigate('Checklist')}
 
        />
         <StatusBar style="auto" />
-      </View>
-    );}
+        </View>
+      )
+    }
 }
 
-const NewTimer =(props)=>{
-  var timertext = "Hasn't Started"
-  const [timeLeft, setTimeLeft]= useState(timertext); //initializes timer text
-  var i=0 //counter of number of sessions
-  var seconds= props.newtime[i]*60 //time left on timer in seconds
-  useEffect(()=>{
-      var x = setInterval(()=>{ //function that repeats every second
-        if (props.startTimer) {
-          seconds--;
-          timertext=timeLeftCalculator(seconds);
-        }
-        else{
-          timertext="Paused";
-        }
 
-        if (seconds<0){ //when timer ends
-            if (i== props.newtime.length-1){
-              clearInterval(x);//not sure if this needs to be here
-              timertext="done";
+const NewTimer =(props)=>{
+  let timertext = "  "
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const [timeLeft, setTimeLeft]= useState(timertext); //initializes timer text
+
+
+  let i=0 //counter of number of sessions
+  let seconds= props.listoftimes[i]//time left on timer in seconds
+
+  useEffect(()=>{ let x = setInterval(()=>{ //function that repeats every second
+        if (buttonClicked){
+          if (seconds<0){ //when timer ends
+              if (i== props.listoftimes.length-1){
+                clearInterval(x);//not sure if this needs to be here
+                timertext="done";
+              }
+              else{ //when switching to next chunk of time
+                i++;
+                seconds= props.listoftimes[i]; //resets timer
+                timertext="switch what you are doing";
+                //insert push notification here
+              }
             }
-            else{
-              i++;
-              seconds= props.newtime[i]*60; //resets timer
-              timertext="switch what you are doing";
-              //insert push notification here
-            }
+          else{ //normal timer running
+            timertext=timeLeftCalculator(seconds);
+          }
+          seconds --
+        }
+        else if (timertext=="Hasn't Started"){
+          timertext=" " //this is easier than making it say "Paused"
         }
         setTimeLeft(timertext);
       },1000); //the 1000 is what makes it repeat every second
-    return () => clearInterval(x);
-  },[]);
+    return () => clearInterval(x);},[buttonClicked]);
+
   return(
-      <Text>{timeLeft}</Text>
+    <>
+      <Button
+        onPress={()=>{
+          setButtonClicked(!buttonClicked);
+        }}
+        disabled{buttonClicked}
+        title={buttonClicked ? "Pause" : "Start"}
+      />
+      <Text>{timeLeft} ShouldStart: {buttonClicked.toString()}</Text>
+    </>
+  )
+}
+
+const ProgressBar=(props)=>{
+  const [numSections, setNumSections]= useState(0); //initializes timer text
+  return(
+    <Text>{numSections} done! </Text>
   )
 }
 
 function timeLeftCalculator(seconds){
-  var days = Math.floor(seconds / ( 60 * 60 * 24));
-  var hours = Math.floor((seconds % (60 * 60 * 24)) / ( 60 * 60));
-  var minutes = Math.floor((seconds % ( 60 * 60)) / 60);
-  var secs = Math.floor(seconds % 60 );
-  var timertext=days + "d " + hours + "h " + minutes + "m " + secs + "s "
+  let days = Math.floor(seconds / ( 60 * 60 * 24));
+  let hours = Math.floor((seconds % (60 * 60 * 24)) / ( 60 * 60));
+  let minutes = Math.floor((seconds % ( 60 * 60)) / 60);
+  let secs = Math.floor(seconds % 60 );
+  let timertext=days + "d " + hours + "h " + minutes + "m " + secs + "s "
   return timertext;
 }
 
