@@ -1,6 +1,30 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { StyleSheet, TouchableOpacity, TextInput, Text, View, Button , } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+
+
+const CheckBox =(props)=>{//from Anne's code
+      const [selected, setSelected] = useState(false);
+      const [clicks, setClicks]=useState(props.clicks);
+      const changeBoxStatus=()=> {setSelected(!selected);setClicks(clicks+1);props.onChange();}
+
+      return(
+         <>
+         <View>
+        <TouchableOpacity style={[styles.checkBox]} onPress={changeBoxStatus} >
+            <Icon
+                size={30}
+                color={'#211f30'}
+                name={ selected ? 'check-box' : 'check-box-outline-blank'}
+            />
+            </TouchableOpacity><Text>Enable recommendation for breaks?</Text>
+            </View>
+            </>
+      )
+
+}
+
 export default class Questionnaire extends React.Component{
    static navigationOptions = {title: 'Questionnaire'};
    state = {
@@ -8,9 +32,12 @@ export default class Questionnaire extends React.Component{
     mins: 0,
     breaks: 0,
     breakTimes:0,
-    workTimes:0
+    workTimes:0,
+    number:0,
+    select:false
  }
-
+ //submit button after hours and minutes
+ //give recommendation and option to use/not use
  handleHours = (text) => {
     this.setState({ hours: parseInt(text) })
     //console.log(text)
@@ -38,7 +65,71 @@ export default class Questionnaire extends React.Component{
     //console.log(k);
     //console.log(this.state.workTimes)
  }
+ changeState =()=>{
+    //e.preventDefault();
+    this.setState({number:this.state.number+1});
+    this.setState({select:!this.state.select});
+ };
+ renderChildren = () =>{
+    return(<>
+      <TextInput style = {styles.input}
+   keyboardType="numeric"
+       underlineColorAndroid = "transparent"
+       placeholder = "Number of Sections"
+       placeholderTextColor = "#9a73ef"
+       autoCapitalize = "none"
+       onChangeText = {this.handleBreaks}/>
+    <TextInput style = {styles.input}
+   keyboardType="numeric"
+       underlineColorAndroid = "transparent"
+       placeholder = "Length of Sections"
+       placeholderTextColor = "#9a73ef"
+       autoCapitalize = "none"
+       onChangeText = {this.handleBreakTimes}/>
+    </>);
+}
+renderDropDown = () => {
+   let time =this.state.hours*60+this.state.mins;
+   let sections=this.state.hours+Math.floor((time-60)/30)+1;
+   let timeslots=[];
+   for(let i=0;i<sections;i++){
+      timeslots.push({label:i+'',value:i});
+   }
+   let lowTime=10+5*this.state.hours;
+   let upTime=20+10*this.state.hours;
+   // let times=[];is laggy for some reason
+   // for(let i=lowTime;i<upTime+1;lowTime+=5){//number after 1 is somewhat arbitrary
+   //    times.push({label:i+' mins',value:i});
+   // }
+   //console.log(timeslots);
+   return (<>
+      <DropDownPicker
+      items={timeslots}
 
+containerStyle={{height: 40}}
+dropDownStyle={{marginTop: 2}}
+      placeholder="Select number of sections"
+   //    items={this.state.mins}
+      onChangeItem={(item)=>{this.setState({
+        breaks:item.value
+      })
+   }}/><DropDownPicker
+   items={[
+{label: '10 mins', value: 10,},
+{label: '15 mins', value: 15,},
+{label: '20 mins', value: 20,},
+]}
+
+containerStyle={{height: 40}}
+dropDownStyle={{marginTop: 2}}
+   placeholder="Select length of sections"
+//    items={this.state.mins}
+   onChangeItem={(item)=>{this.setState({
+     breakTimes:item.value
+   })
+}}/>
+   </>);
+}
    render(){
        const { navigate } = this.props.navigation; //props comes from App.js
        let list = []; //array variable
@@ -75,20 +166,8 @@ dropDownStyle={{marginTop: 2}}
         })
      }}
      />
-           <TextInput style = {styles.input}
-          keyboardType="numeric"
-              underlineColorAndroid = "transparent"
-              placeholder = "Number of Sections"
-              placeholderTextColor = "#9a73ef"
-              autoCapitalize = "none"
-              onChangeText = {this.handleBreaks}/>
-           <TextInput style = {styles.input}
-          keyboardType="numeric"
-              underlineColorAndroid = "transparent"
-              placeholder = "Length of Sections"
-              placeholderTextColor = "#9a73ef"
-              autoCapitalize = "none"
-              onChangeText = {this.handleBreakTimes}/>
+     <CheckBox clicks={this.state.number} select={this.state.select} onChange={this.changeState}/>
+     {this.state.select?this.renderDropDown():this.renderChildren()}
            <TouchableOpacity
               style = {styles.submitButton}
               onPress = {
