@@ -101,7 +101,6 @@ export default class Questionnaire extends React.Component{
                <Button
                   title= "Go to Timer Screen"
                   onPress={() => navigate('Timer', {listoftimes: list})}
-
               />
            </View>
            </>

@@ -1,10 +1,10 @@
 {
-  "devToolsPort": 19003,
-  "expoServerPort": 19001,
-  "packagerPort": 19001,
-  "expoServerNgrokUrl": "https://52-xxk.feizza615.app.exp.direct",
-  "packagerNgrokUrl": "https://packager.52-xxk.feizza615.app.exp.direct",
-  "ngrokPid": 15725,
+  "devToolsPort": 19002,
+  "expoServerPort": null,
+  "packagerPort": 19000,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null,
   "packagerPid": null
 }

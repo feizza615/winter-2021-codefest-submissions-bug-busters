@@ -45,16 +45,16 @@ export default function Notification() {
     return null;
         }
 // Can use this function below, OR use Expo's Push Notification Tool-> https://expo.io/notifications
-function SendPushNotification() {
+ function SendPushNotification() {
   const message = {
     to: token,
     sound: 'default',
     title: "TIME'S UP",
-    body: 'Please return to your study session!',
+    body: 'Please move to the next session!',
     data: { data: 'goes here' },
   };
 
-    fetch('https://exp.host/--/api/v2/push/send', {
+     fetch('https://exp.host/--/api/v2/push/send', {
       method: 'POST',
       headers: {
         Accept: 'application/json',

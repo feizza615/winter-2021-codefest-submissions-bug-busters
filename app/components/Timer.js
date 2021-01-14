@@ -21,6 +21,7 @@ export default class Timer extends React.Component{
 
       const { navigate, state } =this.props.navigation;
       let listoftimes=state.params.listoftimes.map(min=>min*60)//mins to seconds
+      //let listoftimes = [10,20,10,10]
       let sum = listoftimes.reduce(
         ( accumulator, currentValue ) => accumulator + currentValue
       ,0)
@@ -29,11 +30,6 @@ export default class Timer extends React.Component{
         <View style={styles.container}>
         <Text> Study session until {end.toLocaleString()} </Text>
         <NewTimer listoftimes={listoftimes}/>
-        <Button
-           title= "Before you start, make a to do list!"
-           onPress={() => navigate('Checklist')}
-
-       />
         <Button title='Show panel' onPress={() => this._panel.show()} />
         <SlidingUpPanel ref={c => this._panel = c}>
           <View style={styles.container}>
