@@ -2,12 +2,26 @@ import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import useInterval from '@use-it/interval';
+import Notification from './Notification';
+import SlidingUpPanel from 'rn-sliding-up-panel';
+import Checklist from './Checklist';
 
+var isNotified = false;
+
+function NotifyUser(){
+  if(isNotified==true){
+   isNotified = false;
+   Notification();
+  }
+ return null;
+}
 export default class Timer extends React.Component{
     static navigationOptions = {title: 'Timer'};
     render(){
+
       const { navigate, state } =this.props.navigation;
       let listoftimes=state.params.listoftimes.map(min=>min*60)//mins to seconds
+      //let listoftimes = [10,20,10,10]
       let sum = listoftimes.reduce(
         ( accumulator, currentValue ) => accumulator + currentValue
       ,0)
@@ -16,11 +30,13 @@ export default class Timer extends React.Component{
         <View style={styles.container}>
         <Text> Study session until {end.toLocaleString()} </Text>
         <NewTimer listoftimes={listoftimes}/>
-        <Button
-           title= "Before you start, make a to do list!"
-           onPress={() => navigate('Checklist')}
-
-       />
+        <Button title='Show panel' onPress={() => this._panel.show()} />
+        <SlidingUpPanel ref={c => this._panel = c}>
+          <View style={styles.container}>
+            <Checklist/>
+            <Button title='Hide' onPress={() => this._panel.hide()} />
+          </View>
+        </SlidingUpPanel>
         <StatusBar style="auto" />
         </View>
       )
@@ -46,15 +62,17 @@ const NewTimer =(props)=>{
       setButtonClicked(false)
       //maybe clearInterval?
     }
-    else{ //when switching to next timer
+    else{ //when switching to next timer HERERERER
+      isNotified=true;
       setSeconds(props.listoftimes[i+1])
       setI(i+1)
     }
 
   },1000)//makes it run every second
 
-return(
+  return(
     <>
+      <NotifyUser/>
       <Button
         onPress={()=>{
           setButtonClicked(!buttonClicked);
@@ -65,8 +83,10 @@ return(
       <Text>{timeLeftCalculator(seconds)} </Text>
       <Text>{timeAlert} </Text>
       <ProgressBar i={i}/>
+      
     </>
   )
+
 }
 
 const ProgressBar=(props)=>{
