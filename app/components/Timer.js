@@ -6,22 +6,22 @@ import Notification from './Notification';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import Checklist from './Checklist';
 
-var isNotified = false;
 
-function NotifyUser(){
-  if(isNotified==true){
-   isNotified = false;
+const NotifyUser=(props)=>{
+  if(props.notify==true){
+   props.setNotify(false);
    Notification();
   }
  return null;
 }
+
 export default class Timer extends React.Component{
     static navigationOptions = {title: 'Timer'};
     render(){
 
       const { navigate, state } =this.props.navigation;
-      let listoftimes=state.params.listoftimes.map(min=>min*60)//mins to seconds
-      //let listoftimes = [10,20,10,10]
+      //let listoftimes=state.params.listoftimes.map(min=>min*60)//mins to seconds
+      let listoftimes = [10,20,10,10]
       let sum = listoftimes.reduce(
         ( accumulator, currentValue ) => accumulator + currentValue
       ,0)
@@ -49,6 +49,7 @@ const NewTimer =(props)=>{
   const [timeAlert, setTimeAlert]= useState("Hasn't Started");
   const [i, setI]=useState(0) //counter of listoftimes
   const [seconds,setSeconds]=useState(props.listoftimes[i])
+  const [notify, setNotify]=useState(false)
 
   useInterval(()=>{
     if (!buttonClicked) return
@@ -63,7 +64,7 @@ const NewTimer =(props)=>{
       //maybe clearInterval?
     }
     else{ //when switching to next timer HERERERER
-      isNotified=true;
+      setNotify(true)
       setSeconds(props.listoftimes[i+1])
       setI(i+1)
     }
@@ -72,7 +73,7 @@ const NewTimer =(props)=>{
 
   return(
     <>
-      <NotifyUser/>
+      <NotifyUser notify={notify} setNotify={setNotify}/>
       <Button
         onPress={()=>{
           setButtonClicked(!buttonClicked);
@@ -83,7 +84,7 @@ const NewTimer =(props)=>{
       <Text>{timeLeftCalculator(seconds)} </Text>
       <Text>{timeAlert} </Text>
       <ProgressBar i={i}/>
-      
+
     </>
   )
 
