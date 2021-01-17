@@ -1,8 +1,10 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, TextInput, Text, View,ScrollView, Button } from 'react-native';
+import Timer from './Timer'
 
 export default class Questionnaire extends React.Component{
-   static navigationOptions = {title: 'Questionnaire'};
+   static navigationOptions = {title: 'Questionnaire', 
+   headerLeft:()=> null};
    state = {
     hours: 0,
     mins: 0,
