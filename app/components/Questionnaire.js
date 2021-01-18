@@ -4,10 +4,10 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 
-const CheckBox =(props)=>{//from Anne's code
+const CheckBox =(props)=>{
       const [selected, setSelected] = useState(false);
       const [clicks, setClicks]=useState(props.clicks);
-      const changeBoxStatus=()=> {setSelected(!selected);setClicks(clicks+1);props.onChange();}
+      const changeBoxStatus=()=> {setSelected(!selected);props.onChange();}
 
       return(
          <>
@@ -22,7 +22,6 @@ const CheckBox =(props)=>{//from Anne's code
             </View>
             </>
       )
-
 }
 
 export default class Questionnaire extends React.Component{
@@ -38,98 +37,59 @@ export default class Questionnaire extends React.Component{
  }
  //submit button after hours and minutes
  //give recommendation and option to use/not use
- handleHours = (text) => {
-    this.setState({ hours: parseInt(text) })
-    //console.log(text)
- }
- handleMins = (text) => {
-    this.setState({ mins: parseInt(text) })
- }
- handleBreaks = (text) => {
-    this.setState({ breaks: parseInt(text) })
- }
- handleBreakTimes = (text) => {
-    this.setState({ breakTimes: parseInt(text) })
- }
+
  handleWorkTimes = () => {
-    //console.log(this.state.hours)
-    //console.log(this.state.mins)
-    //console.log(this.state.breaks)
-    //console.log(this.state.breakTimes)
     let i = 60 * this.state.hours + this.state.mins;
     let j = this.state.breaks * this.state.breakTimes;
     let k = i-j;
-    //console.log(k)
+
     k= k/(this.state.breaks+1);
     this.setState({workTimes:k})
-    //console.log(k);
-    //console.log(this.state.workTimes)
- }
- changeState =()=>{
-    //e.preventDefault();
-    this.setState({number:this.state.number+1});
-    this.setState({select:!this.state.select});
- };
- renderChildren = () =>{
-    return(<>
-      <TextInput style = {styles.input}
-   keyboardType="numeric"
-       underlineColorAndroid = "transparent"
-       placeholder = "Number of Sections"
-       placeholderTextColor = "#9a73ef"
-       autoCapitalize = "none"
-       onChangeText = {this.handleBreaks}/>
-    <TextInput style = {styles.input}
-   keyboardType="numeric"
-       underlineColorAndroid = "transparent"
-       placeholder = "Length of Sections"
-       placeholderTextColor = "#9a73ef"
-       autoCapitalize = "none"
-       onChangeText = {this.handleBreakTimes}/>
-    </>);
-}
-renderDropDown = () => {
-   let time =this.state.hours*60+this.state.mins;
-   let sections=this.state.hours+Math.floor((time-60)/30)+1;
-   let timeslots=[];
-   for(let i=0;i<sections;i++){
-      timeslots.push({label:i+'',value:i});
-   }
-   let lowTime=10+5*this.state.hours;
-   let upTime=20+10*this.state.hours;
-   // let times=[];is laggy for some reason
-   // for(let i=lowTime;i<upTime+1;lowTime+=5){//number after 1 is somewhat arbitrary
-   //    times.push({label:i+' mins',value:i});
-   // }
-   //console.log(timeslots);
-   return (<>
-      <DropDownPicker
-      items={timeslots}
 
-containerStyle={{height: 40}}
-dropDownStyle={{marginTop: 2}}
-      placeholder="Select number of sections"
-   //    items={this.state.mins}
-      onChangeItem={(item)=>{this.setState({
-        breaks:item.value
-      })
-   }}/><DropDownPicker
-   items={[
-{label: '10 mins', value: 10,},
-{label: '15 mins', value: 15,},
-{label: '20 mins', value: 20,},
-]}
+    endplus30=[25,5]
+    reg50=[20,5,20,5]
+    reg60=[20,5,25,10]
+    if (hours == 0) :
+      if (mins==45):list= [20,5,20]
+      else if (mins==50): list= [].push.apply(endplus30,20)
+      else: list= [].push.apply(endplus30,25)
+    else:
+        let x=mins
+        list=new Array(hours-1).fill(reg60).flat()
+        //need zero case
+        if 0<x<20 or 30<x<50:
+          list.push.apply(list,reg50) //for 10,15,40,45
+        else:
+          list=list.push.apply(list,reg60) //for all others
+        if x>30:
+          list.push.apply(list,endplus30) //for greater than half an hour, add [25,5]
+        if x===30:
+          list.push.apply(list,[30])
+        else if x % 10 = 0:
+          list.push.apply(list,[20])
+        else:
+          list.push.apply(list,[25])
 
-containerStyle={{height: 40}}
-dropDownStyle={{marginTop: 2}}
-   placeholder="Select length of sections"
-//    items={this.state.mins}
-   onChangeItem={(item)=>{this.setState({
-     breakTimes:item.value
-   })
-}}/>
-   </>);
-}
+        switch(mins){
+          //case 5: return hours*reg60
+          //case 10: return hours*reg50+20 break;
+          case 15: return hours*reg50+25
+          case 20: return hours*reg60+20
+          //case 25: return hours*reg60+25
+          case 30: return hours*reg60+30
+          case 40: return hours*reg50+endplus30+20
+          case 45: return hours*reg50+endplus30+25
+          case 50: return hours*reg60+endplus30+20
+          //case 55: return hours*reg60+endplus30+25
+          case 0: return hours*reg60+[25,10,25]
+        }
+  }//end of handleWorkTimes
+
+  changeState =()=>{
+      this.setState({select:!this.state.select});
+  };
+
+
    render(){
        const { navigate } = this.props.navigation; //props comes from App.js
        let list = []; //array variable
@@ -142,58 +102,47 @@ dropDownStyle={{marginTop: 2}}
           }
        }
        return(
-        <>
         <View style = {styles.container}>
-        <DropDownPicker
-        items={[
-{label: '45 mins', value: 45,},
-{label: '1 hour', value: 60, },
-{label: '1 hour 15 mins', value: 75,},
-{label: '1 hour 30 mins', value: 90,},
-{label: '1 hour 45 mins', value: 105,},
-{label: '2 hours', value: 120,},
-{label: '2 hour 15 mins', value: 135,},
-{label: '2 hour 30 mins', value: 150,},
-]}
+          <DropDownPicker
+            items={makeDropdown()}
+            containerStyle={{height: 40}}
+            dropDownStyle={{marginTop: 2}}
+            placeholder="Select how long you will be studying"
+            onChangeItem={
+              (item)=>{this.setState ({
+                hours: parseInt(Math.floor(item.value/60)),
+                mins: parseInt(item.value%60)
+            })}}
+          />
+          <CheckBox clicks={this.state.number} select={this.state.select} onChange={this.changeState}/>
+          {this.state.select?this.renderDropDown():this.renderChildren()}
+          <TouchableOpacity
+            style = {styles.submitButton}
+            onPress = {
+               () => this.handleWorkTimes()
+            }>
+          <Text style = {styles.submitButtonText}> Submit </Text>
+          </TouchableOpacity>
 
-containerStyle={{height: 40}}
-dropDownStyle={{marginTop: 2}}
-        placeholder="Select number of minutes"
-     //    items={this.state.mins}
-        onChangeItem={(item)=>{this.setState({
-          hours:parseInt(Math.floor(item.value/60)),
-          mins:parseInt(item.value%60)
-        })
-     }}
-     />
-     <CheckBox clicks={this.state.number} select={this.state.select} onChange={this.changeState}/>
-     {this.state.select?this.renderDropDown():this.renderChildren()}
-           <TouchableOpacity
-              style = {styles.submitButton}
-              onPress = {
-                 () => this.handleWorkTimes()
-              }>
-              <Text style = {styles.submitButtonText}> Submit </Text>
-           </TouchableOpacity>
+          <Text> {this.state.workTimes}</Text>
+          <Text>{list}</Text>
+
+          <Button
+              title= "Go to Timer Screen"
+              onPress={() => navigate('Timer')}
+          />
         </View>
-        <Text>
-        {this.state.workTimes}
-        </Text>
-        <Text>
-        {list}
-        </Text>
-
-           <View style = {styles.container}>
-               <Button
-                  title= "Go to Timer Screen"
-                  onPress={() => navigate('Timer')}
-              />
-           </View>
-           </>
-
        )
    }
 }
+
+function makeDropdown(){
+  let dropdown= Array.from(Array(64).keys())
+  dropdown=dropdown.map(x=>x*5+45)
+  dropdown=dropdown.map(x=>{label:parseInt(Math.floor(x/60))+"hours" + parseInt(x%60) +"mins", value:x})
+  return dropdown
+}
+
 const styles = StyleSheet.create({
     container: {
        paddingTop: 23
