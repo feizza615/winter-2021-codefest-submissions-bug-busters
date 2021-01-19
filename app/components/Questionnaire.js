@@ -164,7 +164,7 @@ makeListManually =()=>{
 
           <Button
               title= "Go to Timer Screen"
-              onPress={() => navigate('Timer', {list: this.state.list})}
+              onPress={() => navigate('Timer', {listoftimes: this.state.list})}
           />
         </View>
        )
