@@ -1,11 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, TouchableOpacity, StyleSheet, Text, View, Alert, Animated } from 'react-native';
 import useInterval from '@use-it/interval';
 import Notification from './Notification';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import Checklist from './Checklist';
-
+import GamePanel from './GamePanel';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const NotifyUser=(props)=>{
   if(props.notify==true){
@@ -15,10 +16,28 @@ const NotifyUser=(props)=>{
  return null;
 }
 
+var status =true;
+const animatedValue1 = new Animated.Value(0);
+const animatedValue2 = new Animated.Value(0);
 export default class Timer extends React.Component{
-    static navigationOptions = {title: 'Timer'};
+    static navigationOptions = {title: 'Timer',
+    headerLeft:()=> null};
     render(){
 
+        const createTwoButtonAlert = () =>
+          Alert.alert(
+            "Are you sure you would like to leave?",
+            "Leaving will reset everything",
+            [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+              },
+              { text: "OK", onPress: () => navigate('Questionnaire') }
+            ],
+            { cancelable: false }
+          );
       const { navigate, state } =this.props.navigation;
       let listoftimes=state.params.listoftimes.map(min=>min*60)//mins to seconds
       //let listoftimes = [10,20,10,10]
@@ -26,20 +45,46 @@ export default class Timer extends React.Component{
         ( accumulator, currentValue ) => accumulator + currentValue
       ,0)
       let end= Date.now()+sum*1000 //this doesn't work
-      return(
-        <View style={styles.container}>
-        <Text> Study session until {end.toLocaleString()} </Text>
-        <NewTimer listoftimes={listoftimes}/>
-        <Button title='Show panel' onPress={() => this._panel.show()} />
-        <SlidingUpPanel ref={c => this._panel = c}>
+      if(status==true){
+        return(
           <View style={styles.container}>
+          <Text> Study session until {end.toLocaleString()} </Text>
+          <NewTimer listoftimes={listoftimes}/>
+          <Button title='Reset timer' onPress={createTwoButtonAlert}/>
+          <TouchableOpacity onPress={() => this._firstPanel.show()}><Text>Open First Panel</Text></TouchableOpacity>
+        <TouchableOpacity  onPress={() => this._secondPanel.show()}><Text>Open Second Panel</Text></TouchableOpacity>
+        <SlidingUpPanel
+          draggableRange={{ top: 600, bottom: 0 }} ref={(c) => this._firstPanel = c} animatedValue={animatedValue1}>
+          <View style={styles.slidingPanelContainer}>
             <Checklist/>
-            <Button title='Hide' onPress={() => this._panel.hide()} />
           </View>
         </SlidingUpPanel>
-        <StatusBar style="auto" />
+        <SlidingUpPanel
+           draggableRange={{ top: 600, bottom: 0 }} ref={(c) => this._secondPanel = c} animatedValue={animatedValue2}>
+          <View style={styles.slidingPanelContainer}>
+            <GamePanel/>
+          </View>
+        </SlidingUpPanel>
+          </View>
+        )
+      }
+      else{
+        return(
+          <View style={styles.container}>
+          <Text> Study session until {end.toLocaleString()} </Text>
+          <NewTimer listoftimes={listoftimes}/>
+          <Button title='Reset timer' onPress={createTwoButtonAlert}/>
+          <TouchableOpacity onPress={() => this._firstPanel.show()}><Text>Open First Panel</Text></TouchableOpacity>
+        <SlidingUpPanel
+          draggableRange={{ top: 600, bottom: 0 }} ref={(c) => this._firstPanel = c} animatedValue={animatedValue1}>
+          <View style={styles.slidingPanelContainer}>
+            <Checklist/>
+          </View>
+        </SlidingUpPanel>
         </View>
-      )
+        )
+      }
+      
     }
 }
 
@@ -72,7 +117,7 @@ const NewTimer =(props)=>{
   },1000)//makes it run every second
 
   return(
-    <>
+<>
       <NotifyUser notify={notify} setNotify={setNotify}/>
       <Button
         onPress={()=>{
@@ -85,7 +130,7 @@ const NewTimer =(props)=>{
       <Text>{timeAlert} </Text>
       <ProgressBar i={i}/>
 
-    </>
+ </>
   )
 
 }
@@ -112,4 +157,9 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
+    slidingPanelContainer: {
+      flex: 1,
+      backgroundColor: '#FFF',
+      alignItems: 'center',
+    }
   });

@@ -1,5 +1,7 @@
+
 import React,{useState} from 'react'
-import { StyleSheet, TouchableOpacity, TextInput, Text, View, Button , } from 'react-native';
+import { StyleSheet, TouchableOpacity, TextInput, Text, View,ScrollView, Button } from 'react-native';
+import Timer from './Timer'
 import DropDownPicker from 'react-native-dropdown-picker'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
@@ -23,8 +25,10 @@ const CheckBox =(props)=>{
       )
 }
 
+
 export default class Questionnaire extends React.Component{
-   static navigationOptions = {title: 'Questionnaire'};
+   static navigationOptions = {title: 'Questionnaire', 
+   headerLeft:()=> null};
    state = {
     hours: 0,
     mins: 0,
