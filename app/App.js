@@ -8,7 +8,6 @@ import Checklist from "./components/Checklist"
 import Game from './components/Game'
 
 const Stack = createStackNavigator({
-  //
   Game: {screen: Game},
   Questionnaire: { screen: Questionnaire},
   Timer: { screen: Timer },

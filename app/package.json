@@ -28,6 +28,7 @@
     "react-native-web": "~0.13.12",
     "react-navigation": "^4.4.3",
     "react-navigation-stack": "^2.10.2",
+    "rn-draw": "https://github.com/harveyappleton/rn-draw/tarball/945769effad1de849f6fc4057c50669cb24a11e6",
     "rn-sliding-up-panel": "^2.4.5"
   },
   "devDependencies": {
