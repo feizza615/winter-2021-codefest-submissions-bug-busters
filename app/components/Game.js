@@ -27,7 +27,7 @@ export default class Game extends React.Component{
             { cancelable: false }
           );
         return(
-           <View>
+           <>
            <View style={{ width: 400, height: 400 }}>
            <RNDraw
            containerStyle={{
@@ -53,7 +53,7 @@ export default class Game extends React.Component{
                 <Text>This is the Game Screen</Text>
                 <Button title='Skip Game and Go To Questionnaire' onPress={createTwoButtonAlert}/>
             </View>
-            </View>
+            </>
             
         )
     }
