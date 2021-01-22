@@ -20,6 +20,7 @@
     "react-dom": "16.13.1",
     "react-native": "^0.63.2",
     "react-native-dropdown-picker": "^3.7.8",
+    "react-native-game-engine": "^1.2.0",
     "react-native-gesture-handler": "~1.8.0",
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.9",
@@ -27,6 +28,7 @@
     "react-native-web": "~0.13.12",
     "react-navigation": "^4.4.3",
     "react-navigation-stack": "^2.10.2",
+    "rn-draw": "https://github.com/harveyappleton/rn-draw/tarball/945769effad1de849f6fc4057c50669cb24a11e6",
     "rn-sliding-up-panel": "^2.4.5"
   },
   "devDependencies": {
