@@ -28,7 +28,7 @@ import React, { PureComponent } from "react";
 import { AppRegistry, StyleSheet, StatusBar } from "react-native";
 import { GameEngine } from "react-native-game-engine";
 import { Finger } from "./renderers";
-import { MoveFinger } from "./systems"
+import { MoveFinger,PressFinger } from "./systems"
 
 export default class BestGameEver extends PureComponent {
   constructor() {
@@ -39,14 +39,14 @@ export default class BestGameEver extends PureComponent {
     return (
       <GameEngine
         style={styles.container}
-        systems={[MoveFinger]}
+        systems={[MoveFinger,PressFinger]}
         entities={{
-          1: { position: [40,  50], renderer: <Finger />}, //-- Notice that each entity has a unique id (required)
-          2: { position: [100, 50], renderer: <Finger />}, //-- and a renderer property (optional). If no renderer
-          3: { position: [160, 50], renderer: <Finger />}, //-- is supplied with the entity - it won't get displayed.
-          4: { position: [220, 50], renderer: <Finger />},
-          5: { position: [280, 50], renderer: <Finger />},
-          6: { position: [340, 50], renderer: <Finger />}
+          1: { color:'pink' , position: [40,  50], renderer: <Finger />}, //-- Notice that each entity has a unique id (required)
+          2: { color:'pink' ,position: [100, 50], renderer: <Finger />}, //-- and a renderer property (optional). If no renderer
+          3: { color:'pink' ,position: [160, 50], renderer: <Finger />}, //-- is supplied with the entity - it won't get displayed.
+          4: { color:'pink' ,position: [220, 50], renderer: <Finger />},
+          5: { color:'pink' ,position: [280, 50], renderer: <Finger />},
+          6: { color:'pink' ,position: [340, 50], renderer: <Finger />}
         }}>
 
         <StatusBar hidden={true} />
