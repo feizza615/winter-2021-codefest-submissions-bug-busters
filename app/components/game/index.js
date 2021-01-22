@@ -41,12 +41,12 @@ export default class BestGameEver extends PureComponent {
         style={styles.container}
         systems={[MoveFinger,PressFinger]}
         entities={{
-          1: { color:'pink' , position: [40,  50], renderer: <Finger />}, //-- Notice that each entity has a unique id (required)
-          2: { color:'pink' ,position: [100, 50], renderer: <Finger />}, //-- and a renderer property (optional). If no renderer
-          3: { color:'pink' ,position: [160, 50], renderer: <Finger />}, //-- is supplied with the entity - it won't get displayed.
-          4: { color:'pink' ,position: [220, 50], renderer: <Finger />},
-          5: { color:'pink' ,position: [280, 50], renderer: <Finger />},
-          6: { color:'pink' ,position: [340, 50], renderer: <Finger />}
+          1: { color:'pink' , position: [((Math.random()*4)+1)*25,  0], renderer: <Finger />}, //-- Notice that each entity has a unique id (required)
+          2: { color:'pink' ,position: [((Math.random()*4)+1)*25+50, ((Math.random()*4)+1)*25+25], renderer: <Finger />}, //-- and a renderer property (optional). If no renderer
+          3: { color:'pink' ,position: [((Math.random()*4)+1)*25+100, ((Math.random()*4)+1)*25+50], renderer: <Finger />}, //-- is supplied with the entity - it won't get displayed.
+          4: { color:'pink' ,position: [((Math.random()*4)+1)*25+125, ((Math.random()*4)+1)*25], renderer: <Finger />},
+          5: { color:'pink' ,position: [((Math.random()*4)+1)*25+150, ((Math.random()*4)+1)*25+25], renderer: <Finger />},
+          6: { color:'pink' ,position: [((Math.random()*4)+1)*25+175, ((Math.random()*4)+1)*25+50], renderer: <Finger />}
         }}>
 
         <StatusBar hidden={true} />

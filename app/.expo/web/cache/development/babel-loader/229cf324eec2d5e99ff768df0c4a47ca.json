@@ -1,0 +1,1 @@
+{"ast":null,"code":"export function noop() {}","map":{"version":3,"sources":[],"names":[],"mappings":"","sourcesContent":["/** PURE_IMPORTS_START  PURE_IMPORTS_END */\nexport function noop() { }\n//# sourceMappingURL=noop.js.map\n"]},"metadata":{},"sourceType":"module"}
