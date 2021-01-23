@@ -1,17 +1,65 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
-import { TouchableOpacity, Button, StyleSheet, Text, View, Alert } from 'react-native';
+import { TouchableOpacity, StyleSheet, Button, Text, View, Alert } from 'react-native';
 import { registerRootComponent } from 'expo';
-import BestGame from "./game";
 import RNDraw from 'rn-draw'
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Swiper from 'react-native-swiper'
+import { Overlay } from 'react-native-elements';
 
+const OverlayExample = () => {
+  const [visible, setVisible] = useState(false);
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
+  return (
+    <View>
+      <TouchableOpacity onPress={toggleOverlay}>
+        <Icon name="question" style= {styles.button}  size={50}/>
+      </TouchableOpacity>   
+         
+      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+        <View style={{ height: 300 , width: 300}}>
+          <Swiper style={styles.wrapper} showsButtons={false}>
+            <View style={styles.slide}>
+              <Text style={styles.text}>Welcome to Connect All!</Text>
+            </View>
+            <View style={styles.slide}>
+              <Text style={styles.text}>Start by connecting the highlighted dots by drawing a line between them.</Text>
+            </View>
+            <View style={styles.slide}>
+              <Text style={styles.text}>The line can not touch any other line or dots (excluding the highlighted dots)</Text>
+            </View>
+            <View style={styles.slide}>
+              <Text style={styles.text}>Each dot will be highlighted twice</Text>
+            </View>
+            <View style={styles.slide}>
+              <Text style={styles.text}>To receive the next pair of highlighted dots, press next.</Text>
+            </View>
+            <View style={styles.slide}>
+              <Text style={styles.text}>Good luck and have fun!</Text>
+            </View>
+          </Swiper>
+        </View>
+      </Overlay>
+
+    </View>
+  );
+};
 export default class Game extends React.Component{
-    static navigationOptions = {title: 'Game'};
+    static navigationOptions = { headerShown: false ,title: 'Game'};
+
     rewind=()=>{
       this._undo()
     }
-
+    clear=()=>{
+      this._clear()
+    }
+   
     render(){
-        const { navigate, state } =this.props.navigation;
+        const { navigate, state } =this.props.navigation;        
+
         const createTwoButtonAlert = () =>
           Alert.alert( 
             "Are you sure you would like to leave this screen?",
@@ -26,44 +74,79 @@ export default class Game extends React.Component{
             ],
             { cancelable: false }
           );
+
         return(
-           <>
-           <View style={{ width: 400, height: 400 }}>
-           <RNDraw
-           containerStyle={{
-            backgroundColor: '#FFF',
-            width: 400,
-            height: 400,
-            }}
-              strokes={[]}
-              containerStyle={{backgroundColor: 'rgba(0,0,0,0.01)'}}
-              rewind={(undo) => {this._undo = undo}}
-              clear={(clear) => {this._clear = clear}}
-              color={'#000000'}
-              strokeWidth={4}
-              onChangeStrokes={(strokes) => console.log(strokes)}
-            />
+
+           <View style={{flex: 1, backgroundColor:"white"}}>
+
+             <View style={{ flexDirection: "row" , backgroundColor: "white", justifyContent: "space-evenly"}}>
+                <TouchableOpacity onPress={this.rewind}>
+                  <Icon name="undo" style= {styles.button} size={50}/>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={this.clear}>
+                  <Icon name="forward" style= {styles.button}  size={50}/>
+                </TouchableOpacity>
+                <OverlayExample/>
+              </View>
+
+            <View style={{height: 520, marginTop:20, borderBottomWidth:2,  borderTopWidth: 2,  }}>
+              <RNDraw
+              containerStyle={{
+                backgroundColor: '#FFF',
+                width: 400,
+                height: 400,
+                }}
+                  strokes={[]}
+                  containerStyle={{backgroundColor: 'white'}}
+                  rewind={(undo) => {this._undo = undo}}
+                  clear={(clear) => {this._clear = clear}}
+                  color={'#000000'}
+                  strokeWidth={4}
+                  onChangeStrokes={(strokes) => console.log(strokes)}
+                />
             </View>
-              <TouchableOpacity
-              onPress={this.rewind}
-            >
-              <Text >Rewind</Text>
-            </TouchableOpacity>
-            <View style={styles.container}>
-                <Text>This is the Game Screen</Text>
-                <Button title='Skip Game and Go To Questionnaire' onPress={createTwoButtonAlert}/>
+              
+           
+              <View style={styles.skip}>
+                  <Button color="black" title='Skip Game' onPress={createTwoButtonAlert}/>
+              </View>
+
             </View>
-            </>
+
             
         )
     }
 }
 registerRootComponent(Game);
 const styles = StyleSheet.create({
-    container: {
-      flex: 3,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
+    button:{
+      height:80,
+      paddingTop:30,
+      paddingBottom:30,
+      width:50,
+      justifyContent: "space-evenly"
+    
     },
+    skip: {
+      alignSelf: 'center',
+      marginTop:5,
+      backgroundColor: 'white',
+      justifyContent: 'center',
+      color: 'black'
+    },
+  wrapper: {},
+  slide: {
+    flex: 1,
+    paddingRight: 18,
+    paddingLeft: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white'
+  },
+  text: {
+    color: 'black',
+    fontSize: 20,
+    fontWeight: 'bold'
+  }
   });
