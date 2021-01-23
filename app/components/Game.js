@@ -76,6 +76,7 @@ export default class Game extends React.Component{
           );
 
         return(
+
            <View style={{flex: 1, backgroundColor:"white"}}>
 
              <View style={{ flexDirection: "row" , backgroundColor: "white", justifyContent: "space-evenly"}}>
@@ -106,13 +107,13 @@ export default class Game extends React.Component{
                 />
             </View>
               
-             
-              
+           
               <View style={styles.skip}>
                   <Button color="black" title='Skip Game' onPress={createTwoButtonAlert}/>
               </View>
 
             </View>
+
             
         )
     }
