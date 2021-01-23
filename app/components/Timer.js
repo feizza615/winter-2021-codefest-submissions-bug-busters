@@ -1,20 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
-import { Button, TouchableOpacity, StyleSheet, Text, View, Alert, Animated } from 'react-native';
+import { LogBox, Button, TouchableOpacity, StyleSheet, Text, View, Alert, Animated } from 'react-native';
 import useInterval from '@use-it/interval';
 import Notification from './Notification';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import Checklist from './Checklist';
 import GamePanel from './GamePanel';
 import { ScrollView } from 'react-native-gesture-handler';
-
-const NotifyUser=(props)=>{
-  if(props.notify==true){
-   props.setNotify(false);
-   Notification();
-  }
- return null;
-}
+LogBox.ignoreAllLogs();
 
 var status =true;
 const animatedValue1 = new Animated.Value(0);
@@ -23,7 +16,6 @@ export default class Timer extends React.Component{
     static navigationOptions = {title: 'Timer',
     headerLeft:()=> null};
     render(){
-
         const createTwoButtonAlert = () =>
           Alert.alert(
             "Are you sure you would like to leave?",
@@ -39,8 +31,8 @@ export default class Timer extends React.Component{
             { cancelable: false }
           );
       const { navigate, state } =this.props.navigation;
-      let listoftimes=state.params.listoftimes.map(min=>min*60)//mins to seconds
-      //let listoftimes = [10,20,10,10]
+      //let listoftimes=state.params.listoftimes.map(min=>min*60)//mins to seconds
+      let listoftimes = [10,20,10,10]
       let sum = listoftimes.reduce(
         ( accumulator, currentValue ) => accumulator + currentValue
       ,0)
@@ -48,40 +40,10 @@ export default class Timer extends React.Component{
       if(status==true){
         return(
           <View style={styles.container}>
-          <Text> Study session until {end.toLocaleString()} </Text>
-          <NewTimer listoftimes={listoftimes}/>
-          <Button title='Reset timer' onPress={createTwoButtonAlert}/>
-          <TouchableOpacity onPress={() => this._firstPanel.show()}><Text>Open First Panel</Text></TouchableOpacity>
-        <TouchableOpacity  onPress={() => this._secondPanel.show()}><Text>Open Second Panel</Text></TouchableOpacity>
-        <SlidingUpPanel
-          draggableRange={{ top: 600, bottom: 0 }} ref={(c) => this._firstPanel = c} animatedValue={animatedValue1}>
-          <View style={styles.slidingPanelContainer}>
-            <Checklist/>
+            <Text> Study session until {end.toLocaleString()} </Text>
+            <Button title='Reset timer' onPress={createTwoButtonAlert}/>
+            <NewTimer listoftimes={listoftimes}/>
           </View>
-        </SlidingUpPanel>
-        <SlidingUpPanel
-           draggableRange={{ top: 600, bottom: 0 }} ref={(c) => this._secondPanel = c} animatedValue={animatedValue2}>
-          <View style={styles.slidingPanelContainer}>
-            <GamePanel/>
-          </View>
-        </SlidingUpPanel>
-          </View>
-        )
-      }
-      else{
-        return(
-          <View style={styles.container}>
-          <Text> Study session until {end.toLocaleString()} </Text>
-          <NewTimer listoftimes={listoftimes}/>
-          <Button title='Reset timer' onPress={createTwoButtonAlert}/>
-          <TouchableOpacity onPress={() => this._firstPanel.show()}><Text>Open First Panel</Text></TouchableOpacity>
-        <SlidingUpPanel
-          draggableRange={{ top: 600, bottom: 0 }} ref={(c) => this._firstPanel = c} animatedValue={animatedValue1}>
-          <View style={styles.slidingPanelContainer}>
-            <Checklist/>
-          </View>
-        </SlidingUpPanel>
-        </View>
         )
       }
       
@@ -95,8 +57,30 @@ const NewTimer =(props)=>{
   const [i, setI]=useState(0) //counter of listoftimes
   const [seconds,setSeconds]=useState(props.listoftimes[i])
   const [notify, setNotify]=useState(false)
+  const [panel, setPanel] =useState(false)
 
+  //This function triggers a notification:
+  const NotifyUser=()=>{
+    if(notify==true){
+      setNotify(false);
+      Notification();
+    }
+   return null;
+  }
+
+  //This function disables and enables the button for the game panel:
+  const DisplayPanel=()=>{
+    if(i%2==0){
+      setPanel(true);
+    }
+    else{
+      setPanel(false);
+    }
+    return null;
+  }
+  
   useInterval(()=>{
+    DisplayPanel()
     if (!buttonClicked) return
     if(seconds>1){ //regular timer operations
       setSeconds(seconds-1)
@@ -118,7 +102,7 @@ const NewTimer =(props)=>{
 
   return(
 <>
-      <NotifyUser notify={notify} setNotify={setNotify}/>
+      <NotifyUser/>
       <Button
         onPress={()=>{
           setButtonClicked(!buttonClicked);
@@ -130,6 +114,23 @@ const NewTimer =(props)=>{
       <Text>{timeAlert} </Text>
       <ProgressBar i={i}/>
 
+      <TouchableOpacity onPress={() => _firstPanel.show()}><Text>Open First Panel</Text></TouchableOpacity>
+      <TouchableOpacity disabled={panel} onPress={() => _secondPanel.show()}><Text>Open Second Panel</Text></TouchableOpacity>
+
+      <SlidingUpPanel
+        draggableRange={{ top: 600, bottom: 0 }} ref={(c) => _firstPanel = c} animatedValue={animatedValue1}>
+        <View style={styles.slidingPanelContainer}>
+          <Checklist/>
+        </View>
+      </SlidingUpPanel>
+
+      <SlidingUpPanel
+          draggableRange={{ top: 600, bottom: 0 }} ref={(c) => _secondPanel = c} animatedValue={animatedValue2}>
+        <View style={styles.slidingPanelContainer}>
+          <GamePanel/>
+        </View>
+      </SlidingUpPanel>
+        
  </>
   )
 
