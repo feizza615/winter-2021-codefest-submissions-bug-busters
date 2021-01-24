@@ -121,7 +121,7 @@ export default class Game extends React.Component{
 registerRootComponent(Game);
 const styles = StyleSheet.create({
     button:{
-      height:80,
+      height:100,
       paddingTop:30,
       paddingBottom:30,
       width:50,
