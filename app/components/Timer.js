@@ -6,7 +6,7 @@ import Notification from './Notification';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import Checklist from './Checklist';
 import GamePanel from './GamePanel';
-import { ScrollView } from 'react-native-gesture-handler';
+
 LogBox.ignoreAllLogs();
 
 var status =true;
@@ -51,6 +51,7 @@ export default class Timer extends React.Component{
 }
 
 
+
 const NewTimer =(props)=>{
   const [buttonClicked, setButtonClicked] = useState(false);
   const [timeAlert, setTimeAlert]= useState("Hasn't Started");
@@ -58,8 +59,6 @@ const NewTimer =(props)=>{
   const [seconds,setSeconds]=useState(props.listoftimes[i])
   const [notify, setNotify]=useState(false)
   const [panel, setPanel] =useState(false)
-  const TopVal = 600
-
 
 
   //This function triggers a notification:
@@ -75,12 +74,11 @@ const NewTimer =(props)=>{
   const DisplayPanel=()=>{
     if(i%2==0){
       setPanel(true);
+      animatedValue2.setValue(0)
     }
     else if(i%2==1){
       setPanel(false);
-      if(animatedValue2==600){
-        
-      }
+      
     }
     return null;
   }
@@ -107,7 +105,8 @@ const NewTimer =(props)=>{
   },1000)//makes it run every second
 
   return(
-<>
+<>  
+
       <NotifyUser/>
       <Button
         onPress={()=>{
