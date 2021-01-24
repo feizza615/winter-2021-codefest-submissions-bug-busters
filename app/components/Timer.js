@@ -58,6 +58,9 @@ const NewTimer =(props)=>{
   const [seconds,setSeconds]=useState(props.listoftimes[i])
   const [notify, setNotify]=useState(false)
   const [panel, setPanel] =useState(false)
+  const TopVal = 600
+
+
 
   //This function triggers a notification:
   const NotifyUser=()=>{
@@ -73,8 +76,11 @@ const NewTimer =(props)=>{
     if(i%2==0){
       setPanel(true);
     }
-    else{
+    else if(i%2==1){
       setPanel(false);
+      if(animatedValue2==600){
+        
+      }
     }
     return null;
   }
