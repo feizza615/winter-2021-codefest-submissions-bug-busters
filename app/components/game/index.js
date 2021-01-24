@@ -25,28 +25,29 @@
 //
 // export default Game;
 import React, { PureComponent } from "react";
-import { AppRegistry, StyleSheet, StatusBar } from "react-native";
+import { AppRegistry, StyleSheet, StatusBar, Dimensions } from "react-native";
 import { GameEngine } from "react-native-game-engine";
 import { Finger } from "./renderers";
 import { MoveFinger} from "./systems"
 
+const windowWidth = Dimensions.get('window').width;
+const dotPlacement = windowWidth/3;
 export default class BestGameEver extends PureComponent {
   constructor() {
     super();
   }
-
   render() {
     return (
       <GameEngine
         style={styles.container}
         systems={[MoveFinger]}
         entities={{
-          1: { color:'pink' , position: [(Math.floor((Math.random()*4))+1)*25,  ((Math.random()*15)+1)*25+25], renderer: <Finger />}, //-- Notice that each entity has a unique id (required)
-          2: { color:'pink' , position: [((Math.random()*4)+2)*25+50,((Math.random()*8)+1)*25+ 125], renderer: <Finger />}, //-- and a renderer property (optional). If no renderer
-          3: { color:'pink' , position: [((Math.random()*4)+1)*25+100, ((Math.random()*8)+1)*25+75], renderer: <Finger />}, //-- is supplied with the entity - it won't get displayed.
-          4: { color:'pink' , position: [((Math.random()*6)+2)*25+150, ((Math.random()*15)+1)*25+25], renderer: <Finger />},
-          5: { color:'pink' , position: [((Math.random()*4)+1)*25+200, ((Math.random()*8)+1)*25+50], renderer: <Finger />},
-          6: { color:'pink' , position: [((Math.random()*4)+1)*25+250, ((Math.random()*8)+4)*25+150], renderer: <Finger />}
+          1: { color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+30),  Math.floor(Math.random()*(160)+20)], renderer: <Finger />}, //-- Notice that each entity has a unique id (required)
+          2: { color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+dotPlacement+30),Math.floor(Math.random()*(160)+20)], renderer: <Finger />}, //-- and a renderer property (optional). If no renderer
+          3: { color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+2*dotPlacement+30), Math.floor(Math.random()*(160)+20)], renderer: <Finger />}, //-- is supplied with the entity - it won't get displayed.
+          4: { color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+30), Math.floor(Math.random()*(160)+220)], renderer: <Finger />},
+          5: { color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+dotPlacement+30), Math.floor(Math.random()*(160)+220)], renderer: <Finger />},
+          6: { color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+2*dotPlacement+30), Math.floor(Math.random()*(160)+220)], renderer: <Finger />},
         }}>
 
         <StatusBar hidden={true} />
