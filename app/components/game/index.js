@@ -25,23 +25,27 @@
 //
 // export default Game;
 import React, { PureComponent } from "react";
-import { AppRegistry, StyleSheet, StatusBar } from "react-native";
-import { GameEngine } from "react-native-game-engine";
+import { View, Button, AppRegistry, StyleSheet, StatusBar, Text } from "react-native";
+import { GameEngine, dispatch } from "react-native-game-engine";
 import { Finger } from "./renderers";
 import { ChangeColor } from "./systems"
 
 export default class BestGameEver extends PureComponent {
-  constructor() {
-    super();
-  }
-
+  constructor(props) {
+    super(props);
+    this.engine = null;
+    this.state = {
+        running: true
+    }
+}
   render() {
     return (
+      <View>
       <GameEngine
+        ref={(ref) => { this.engine = ref; }}
         style={styles.container}
         systems={[ChangeColor]}
         entities={{
-          0: { selected:7, color:'blue' , position: [0,  0], renderer: <Finger />}, //-- Notice that each entity has a unique id (required)
           1: { selected:0, color:'pink' , position: [(Math.floor((Math.random()*4))+1)*25,  0], renderer: <Finger />}, //-- Notice that each entity has a unique id (required)
           2: { selected:0, color:'pink' ,position: [((Math.random()*4)+1)*25+50, 50], renderer: <Finger />}, //-- and a renderer property (optional). If no renderer
           3: { selected:0, color:'pink' ,position: [((Math.random()*4)+1)*25+100, 100], renderer: <Finger />}, //-- is supplied with the entity - it won't get displayed.
@@ -51,8 +55,10 @@ export default class BestGameEver extends PureComponent {
 
         }}>
         <StatusBar hidden={true} />
-
       </GameEngine>
+              <Button title= "Press Me" onPress={() => { this.engine.dispatch({type:"next-move"})} }>
+          </Button>
+      </View>
     );
   }
 }

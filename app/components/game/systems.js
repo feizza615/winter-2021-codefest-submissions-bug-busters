@@ -5,8 +5,14 @@ function getRandomID(array) {
   return Math.floor(Math.random() * array.length);
 }
 
-const ChangeColor = (entities, { touches }) => {
-
+const ChangeColor = (entities, { touches, dispatch, events }) => {
+  if (events.length){
+    for(let i=0; i<events.length; i++){
+        if (events[i].type === "next-move" ){
+            console.log("next move")
+        } 
+    }
+}
   //-- I'm choosing to update the game state (entities) directly for the sake of brevity and simplicity.
   //-- There's nothing stopping you from treating the game state as immutable and returning a copy..
   //-- Example: return { ...entities, t.id: { UPDATED COMPONENTS }};
@@ -26,27 +32,27 @@ const ChangeColor = (entities, { touches }) => {
     }
   }
 
-  touches.filter(t => t.type === "press").forEach(t => {
-    console.log(t.event.pageX, t.event.pageY) //probably pixels
-    if (0<=t.event.pageX <3 && 0<=t.event.pageY <3){ //why is it going into here?
-      //gets random index of eligibleArray
-      ran1= getRandomID(eligibleArray)
-      //uses id to get one dot entity
-      dotOne = entities[2]//[eligibleArray[ran1]]
-      //removes that id from the eligible list
-      eligibleArray.splice(ran1,1)
-      //gets second dot entity
-      dotTwo = entities[1]//[eligibleArray[getRandomID(eligibleArray)]]
-      console.log("aaaa")
+  // touches.filter(t => t.type === "press").forEach(t => {
+  //   console.log(t.event.pageX, t.event.pageY) //probably pixels
+  //   if (0<=t.event.pageX <3 && 0<=t.event.pageY <3){ //why is it going into here?
+  //     //gets random index of eligibleArray
+  //     ran1= getRandomID(eligibleArray)
+  //     //uses id to get one dot entity
+  //     dotOne = entities[2]//[eligibleArray[ran1]]
+  //     //removes that id from the eligible list
+  //     eligibleArray.splice(ran1,1)
+  //     //gets second dot entity
+  //     dotTwo = entities[1]//[eligibleArray[getRandomID(eligibleArray)]]
+  //     console.log("aaaa")
 
-      //makes these two red
-      entities[[eligibleArray[ran1]]].color = 'red';
-      dotTwo.color = 'red';
-      //adds to the counter
-      dotOne.selected = dotOne.selected + 1
-      dotTwo.selected = dotTwo.selected + 1
-    }
-  })
+  //     //makes these two red
+  //     entities[[eligibleArray[ran1]]].color = 'red';
+  //     dotTwo.color = 'red';
+  //     //adds to the counter
+  //     dotOne.selected = dotOne.selected + 1
+  //     dotTwo.selected = dotTwo.selected + 1
+  //   }
+  //})
 
 
 
