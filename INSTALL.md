@@ -2,11 +2,11 @@
 
 # HOW TO INSTALL
 
-# #Set Up Your Device (this project works best with IOS):
+# Set Up Your Device (this project works best with IOS):
 1. Download the Expo app on your phone and create a free account or login (this is necessary in order to receive notifications).
 2. Turn notifications on for Expo on your device
 
-# #Set Up Enviornment for Running the Project: 
+# Set Up Enviornment for Running the Project: 
 1. Make sure you have node js installed (https://nodejs.org/en/download/) (brew install node)
 2. Install Watchman (brew install watchman)
 3. Install Expo (https://docs.expo.io/get-started/installation/) (npm install --global expo-cli)
