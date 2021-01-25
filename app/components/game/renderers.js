@@ -8,7 +8,7 @@ class Finger extends PureComponent {
     const x = this.props.position[0] - RADIUS / 2;
     const y = this.props.position[1] - RADIUS / 2;
     return (
-      <View style={[styles.finger, { left: x, top: y }]} />
+      <View style={[styles.finger, {backgroundColor:this.props.color},{ left: x, top: y }]} />
     );
   }
 }

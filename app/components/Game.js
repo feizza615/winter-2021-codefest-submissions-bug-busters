@@ -17,8 +17,8 @@ const OverlayExample = () => {
     <View>
       <TouchableOpacity onPress={toggleOverlay}>
         <Icon name="question" style= {styles.button}  size={50}/>
-      </TouchableOpacity>   
-         
+      </TouchableOpacity>
+
       <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
         <View style={{ height: 300 , width: 300}}>
           <Swiper style={styles.wrapper} showsButtons={false}>
@@ -56,12 +56,17 @@ export default class Game extends React.Component{
     clear=()=>{
       this._clear()
     }
-   
+    //new
+    //next=()=>{
+      //this.next()
+      //console.log("next");
+    //}
+
     render(){
-        const { navigate, state } =this.props.navigation;        
+        const { navigate, state } =this.props.navigation;
 
         const createTwoButtonAlert = () =>
-          Alert.alert( 
+          Alert.alert(
             "Are you sure you would like to leave this screen?",
             "Leaving will prevent you from returning to the game.",
             [
@@ -97,24 +102,26 @@ export default class Game extends React.Component{
                 width: 400,
                 height: 400,
                 }}
+
                   strokes={[]}
                   containerStyle={{backgroundColor: 'white'}}
                   rewind={(undo) => {this._undo = undo}}
                   clear={(clear) => {this._clear = clear}}
+                  next={(next) => {this._next = next}}
                   color={'#000000'}
                   strokeWidth={4}
                   onChangeStrokes={(strokes) => console.log(strokes)}
                 />
             </View>
-              
-           
+
+
               <View style={styles.skip}>
                   <Button color="black" title='Skip Game' onPress={createTwoButtonAlert}/>
               </View>
 
             </View>
 
-            
+
         )
     }
 }
@@ -126,7 +133,7 @@ const styles = StyleSheet.create({
       paddingBottom:30,
       width:50,
       justifyContent: "space-evenly"
-    
+
     },
     skip: {
       alignSelf: 'center',
