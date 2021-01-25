@@ -12,6 +12,7 @@
 3. Install Expo (https://docs.expo.io/get-started/installation/) (npm install --global expo-cli)
 4. Install React Native (npm install -g react-native-cli)
 5. Sign in to expo account in terminal with command expo login. This is necessary in order for the app to send notifications.
+
 --For more help: (https://medium.com/@pabasarajayawardhana/react-native-environment-set-up-on-mac-os-with-xcode-and-android-studio-324e64c8552e)
 
 # HOW TO RUN
