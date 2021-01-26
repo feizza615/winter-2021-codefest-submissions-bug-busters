@@ -7,60 +7,70 @@ function getRandomIn(array) {
 }
 
 const ChangeColor = (entities, { touches, dispatch, events}) => {
-
-  //-- I'm choosing to update the game state (entities) directly for the sake of brevity and simplicity.
-  //-- There's nothing stopping you from treating the game state as immutable and returning a copy..
-  //-- Example: return { ...entities, t.id: { UPDATED COMPONENTS }};
-  //-- That said, it's probably worth considering performance implications in either case.
-
-
-
- // touches.filter(t => t.type === "press").forEach(t => {
   if (events.length){
-    for(let b=0; b<events.length; b++){
-        if (events[b].type === "next-move" ){
-            
-    var length=Object.keys(entities).length
-    var eligibleArray = []
-    for (var i =1; i<length; i++){
-      //console.log("Aaa")//not going here
-      g= entities[i]
-      if (g.selected <2){
-        g.color = 'pink' //makes all the dots back to pink
-        eligibleArray.push(i) //adds dots that havent been selected 2x already to array
-      }
-      else if( g.selected==2){
-        g.color = 'gray' //grays out the done dots
-      }
-    }
+    for(let e=0; e<events.length; e++){
+      if (events[e].type === "next-move" ){
 
+        var length=Object.keys(entities).length
+        var eligibleArray = []
 
-    //console.log(t.event.pageX, t.event.pageY) //probably pixels
-    if (eligibleArray.length >1){ //why is it going into here?
-      //gets random index of eligibleArray
-      ran1= getRandomIn(eligibleArray) //works
-      //uses id to get one dot entity
-      dotOne = entities[eligibleArray[ran1]]
-      console.log(ran1, eligibleArray[ran1])
-      //removes that id from the eligible list
-      eligibleArray.splice(ran1,1)
-      //gets second dot entity
-      dotTwo = entities[eligibleArray[getRandomIn(eligibleArray)]]
-      console.log("aaaa")
+        for (var i = 1; i<=length; i++){ //loops through dots
+          d= entities[i] //d for dot
 
-      //makes these two red
-      dotOne.color = 'red';
-      dotTwo.color = 'red';
-      //adds to the counter
-      dotOne.selected = dotOne.selected + 1
-      dotTwo.selected = dotTwo.selected + 1
-    }
+          if (d.selected <2){
+            d.color = 'pink' //makes all the unused dots back to pink
+            eligibleArray.push(i) //adds dots that havent been selected 2x already to array
+          }
+
+          else if( d.selected==2){
+            d.color = 'gray' //grays out the used twice dots
+          }
+        }
+
+        if (eligibleArray.length >1){ //if theres two dots left which there always should be unless the game is done
+
+          let ran1= getRandomIn(eligibleArray) //gets a random index in eligibleArray
+          let id1=eligibleArray[ran1]
+          dotOne = entities[id1] //uses id to get one dot
+          console.log(id1)
+          eligibleArray.splice(ran1,1) //removes that id from the eligible list
+
+          //this bit removes the dot that dotOne was previously paired with, if it exists and is still in the array
+          let indexofpairedb4= eligibleArray.indexOf(dotOne.pairedB4) //indexOf() returns -1 if not found
+          if (indexofpairedb4 > -1 && eligibleArray.length >1) { //if its not found, means the pairedB4 dot was used twice already OR dotOne is new
+            console.log(eligibleArray)
+            eligibleArray.splice(indexofpairedb4,1) //removes the dot that was already paired with this one
+
+            console.log(eligibleArray)
+          }
+
+          //gets second dot entity
+          //handles an edge case
+          if ((eligibleArray.length === 2) && (entities[eligibleArray[0]].selected === 0)){
+              id2= eligibleArray[0]
+          }
+          else if ((eligibleArray.length === 2) && (entities[eligibleArray[1]].selected === 0)){
+              id2= eligibleArray[1]
+          }
+          else{ //regular case
+            let ran2=getRandomIn(eligibleArray)
+            id2= eligibleArray[ran2]
+          }
+          console.log(id2)
+          dotTwo = entities[id2]
+
+          //makes these two red
+          dotOne.color = 'red';
+          dotTwo.color = 'red';
+          //adds to the counter
+          dotOne.selected = dotOne.selected + 1
+          dotTwo.selected = dotTwo.selected + 1
+          //records that they were pairedB4
+          //dont have to worry about if they were paired with something else before, because the selected counter handles that
+          dotOne.pairedB4 = id2 //id of dot two
+          dotTwo.pairedB4 = id2//id of dot one
+        }
   }}}
-  //})
-
-
-
-
   return entities;
 };
 
