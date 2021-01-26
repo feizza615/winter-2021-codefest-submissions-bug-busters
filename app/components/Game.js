@@ -84,18 +84,8 @@ export default class Game extends React.Component{
 
            <View style={{flex: 1, backgroundColor:"white"}}>
 
-             <View style={{ flexDirection: "row" , backgroundColor: "white", justifyContent: "space-evenly"}}>
-                <TouchableOpacity onPress={this.rewind}>
-                  <Icon name="undo" style= {styles.button} size={50}/>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={this.clear}>
-                  <Icon name="forward" style= {styles.button}  size={50}/>
-                </TouchableOpacity>
-                <OverlayExample/>
-              </View>
-
-            <View style={{height: 520, marginTop:20, borderBottomWidth:2,  borderTopWidth: 2,  }}>
+            
+            <View style={{height: 520, borderBottomWidth:2,  borderTopWidth: 2,  }}>
               <RNDraw
               containerStyle={{
                 backgroundColor: '#FFF',
@@ -114,6 +104,18 @@ export default class Game extends React.Component{
                 />
             </View>
 
+              
+            <View style={{ flexDirection: "row" , backgroundColor: "white", justifyContent: "space-evenly"}}>
+                <TouchableOpacity onPress={this.rewind}>
+                  <Icon name="undo" style= {styles.button} size={50}/>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={this.clear}>
+                  <Icon name="forward" style= {styles.button}  size={50}/>
+                </TouchableOpacity>
+                <OverlayExample/>
+              </View>
+
 
               <View style={styles.skip}>
                   <Button color="black" title='Skip Game' onPress={createTwoButtonAlert}/>
@@ -128,7 +130,7 @@ export default class Game extends React.Component{
 registerRootComponent(Game);
 const styles = StyleSheet.create({
     button:{
-      height:80,
+      height:100,
       paddingTop:30,
       paddingBottom:30,
       width:50,
@@ -137,7 +139,7 @@ const styles = StyleSheet.create({
     },
     skip: {
       alignSelf: 'center',
-      marginTop:5,
+      marginTop:15,
       backgroundColor: 'white',
       justifyContent: 'center',
       color: 'black'

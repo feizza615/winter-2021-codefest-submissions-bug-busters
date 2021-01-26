@@ -30,6 +30,9 @@ import { GameEngine, dispatch } from "react-native-game-engine";
 import { Finger } from "./renderers";
 import { ChangeColor } from "./systems"
 
+
+const windowWidth = Dimensions.get('window').width;
+const dotPlacement = windowWidth/3;
 export default class BestGameEver extends PureComponent {
   constructor(props) {
     super(props);
@@ -38,6 +41,7 @@ export default class BestGameEver extends PureComponent {
         running: true
     }
 }
+
   render() {
     return (
       <View>

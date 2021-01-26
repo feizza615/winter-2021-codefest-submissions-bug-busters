@@ -1,9 +1,11 @@
 # Hunter Codefest 2020-2021
 
 # Team Info
-### Team name: 
+### Team name: Bug Busters
 ### Team members (format: GitHub username, last name, first name):
-
+- annezats, Zats, Anne
+- feizza615, Fazilatun, Feizza
+- MatthewMing11, Ming, Matthew
 ### Group info (check all that apply - add an X in the [ ])
 - [X] We are a Daedalus Google Mentorship group
 - [ ] We are a beginner group (only completed CSCI 12700)
