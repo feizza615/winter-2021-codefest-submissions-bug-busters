@@ -5,7 +5,7 @@ function getRandomIn(array) {
   return Math.floor(Math.random() * array.length);
 }
 
-const ChangeColor = (entities, { touches }) => {
+const ChangeColor = (entities, { touches, dispatch, events}) => {
 
   //-- I'm choosing to update the game state (entities) directly for the sake of brevity and simplicity.
   //-- There's nothing stopping you from treating the game state as immutable and returning a copy..
@@ -14,17 +14,21 @@ const ChangeColor = (entities, { touches }) => {
 
 
 
-  touches.filter(t => t.type === "press").forEach(t => {
+ // touches.filter(t => t.type === "press").forEach(t => {
+  if (events.length){
+    for(let b=0; b<events.length; b++){
+        if (events[b].type === "next-move" ){
+            
     var length=Object.keys(entities).length
     var eligibleArray = []
     for (var i =1; i<length; i++){
       //console.log("Aaa")//not going here
       g= entities[i]
-      if (g.selected < 2){
+      if (g.selected <2){
         g.color = 'pink' //makes all the dots back to pink
         eligibleArray.push(i) //adds dots that havent been selected 2x already to array
       }
-      else{
+      else if( g.selected==2){
         g.color = 'gray' //grays out the done dots
       }
     }
@@ -50,7 +54,8 @@ const ChangeColor = (entities, { touches }) => {
       dotOne.selected = dotOne.selected + 1
       dotTwo.selected = dotTwo.selected + 1
     }
-  })
+  }}}
+  //})
 
 
 
