@@ -31,8 +31,7 @@ export default class Timer extends React.Component{
             { cancelable: false }
           );
       const { navigate, state } =this.props.navigation;
-      //let listoftimes=state.params.listoftimes.map(min=>min*60)//mins to seconds
-      let listoftimes = [10,20,10,10]
+      let listoftimes=state.params.listoftimes.map(min=>min*60)//mins to seconds
       let sum = listoftimes.reduce(
         ( accumulator, currentValue ) => accumulator + currentValue
       ,0)

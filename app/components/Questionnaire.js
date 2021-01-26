@@ -50,7 +50,10 @@ makeListAuto=()=>{
   let mins=this.state.mins
   let hours = this.state.hours
   let list =[]
-  if (hours!=0){
+  if(mins==-1){
+    list=[.25,.25,.25,.25]
+  }
+  else if (hours!=0){
     list = new Array(hours-1).fill(reg60).flat()
   }
 
@@ -68,6 +71,7 @@ makeListAuto=()=>{
     case 50: list=list.concat(reg60,add30,[20]) ; break;
     case 55: list=list.concat(reg60,add30,[25]) ; break;
   }
+
   if (hours===0){
     list.shift()//removes the added reg60
     list.shift()
@@ -180,6 +184,7 @@ makeListManually =()=>{
 function badEasyDropdown(){
   let dropdown=
   [
+{label:'Demo', value:-1},
 {label: '45 mins', value: 45,},
 {label: '1 hour', value: 60, },
 {label: '1 hour 15 mins', value: 75,},
