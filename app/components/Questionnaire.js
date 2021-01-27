@@ -27,7 +27,7 @@ const CheckBox =(props)=>{
 
 
 export default class Questionnaire extends React.Component{
-   static navigationOptions = {title: 'Questionnaire', 
+   static navigationOptions = {title: 'Questionnaire',
    headerLeft:()=> null};
    state = {
     hours: 0,
@@ -111,12 +111,7 @@ makeListManually =()=>{
       return(
         <>
         <DropDownPicker
-          items={[
-        {label: '1', value: 1,},
-        {label: '2', value: 2, },
-        {label: '3', value: 3,},
-        {label: '4', value: 4, },
-        ]}
+          items={makeDropdownBreakNum()}
           containerStyle={{height: 40}}
           dropDownStyle={{marginTop: 2}}
           placeholder="Select how many breaks you want"
@@ -125,12 +120,7 @@ makeListManually =()=>{
               breaks: item.value
           })}}/>
         <DropDownPicker
-          items={[
-        {label: '5 mins', value: 5,},
-        {label: '10 mins', value: 10,},
-        {label: '15 mins', value: 15,},
-        {label: '20 mins', value: 20,},
-        ]}
+          items={makeDropdownBreaks()}
           containerStyle={{height: 40}}
           dropDownStyle={{marginTop: 2}}
           placeholder="Select how long each break will be"
@@ -149,7 +139,7 @@ makeListManually =()=>{
        return(
         <View style = {styles.container}>
           <DropDownPicker
-            items={badEasyDropdown()}
+            items={makeDropdown()}
             containerStyle={{height: 40}}
             dropDownStyle={{marginTop: 2}}
             placeholder="Select how long you will be studying"
@@ -197,25 +187,25 @@ function badEasyDropdown(){
 return dropdown
 };
 
-//function makeDropdown(){
-  //let dropdown= Array.from(Array(64).keys())
-  //dropdown=dropdown.map(x=>x*5+45)
-  //dropdown=dropdown.map(x=>{label:parseInt(Math.floor(x/60))+"hours" + parseInt(x%60) +"mins", value:x,})
-  //return dropdown
-//};
+function makeDropdown(){
+  let dropdown= Array.from(Array(64).keys())
+  dropdown=dropdown.map(x=>x*5+45)
+  dropdown=dropdown.map(x=>{ return {label:parseInt(Math.floor(x/60))+" hours " + parseInt(x%60) +" mins ", value:x,}})
+  return dropdown
+};
 
-//function makeDropdownBreaks(){
-  //let dropdown= Array.from(Array(6).keys())
-  //dropdown=dropdown.map(x=>x*5+5)
-  //dropdown=dropdown.map(x=>{label:parseInt(x)) + "mins", value:x})
-  //return dropdown
-//};
+function makeDropdownBreaks(){
+  let dropdown= Array.from(Array(6).keys())
+  dropdown=dropdown.map(x=>x*5+5)
+  dropdown=dropdown.map(x=>{return {label:parseInt(x) + " mins", value:x}})
+  return dropdown
+};
 
-//function makeDropdownBreakNum(){
-  //let dropdown= Array.from(Array(15).keys())
-  //dropdown=dropdown.map(x=>{label:parseInt(x)) + "breaks", value:x})
-  //return dropdown
-//};
+function makeDropdownBreakNum(){
+  let dropdown= Array.from(Array(15).keys())
+  dropdown=dropdown.map(x=>{return {label:parseInt(x) + " breaks", value:x}})
+  return dropdown
+};
 
 
 const styles = StyleSheet.create({
