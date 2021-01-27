@@ -1,10 +1,10 @@
 
 import React,{useState} from 'react'
-import { StyleSheet, TouchableOpacity, TextInput, Text, View,ScrollView, Button } from 'react-native';
+import { Image, ImageBackground, StyleSheet, TouchableOpacity, TextInput, Text, View,ScrollView, Button } from 'react-native';
 import Timer from './Timer'
 import DropDownPicker from 'react-native-dropdown-picker'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-
+import {Header} from 'react-native-elements'
 
 const CheckBox =(props)=>{
       const [selected, setSelected] = useState(true);
@@ -27,8 +27,7 @@ const CheckBox =(props)=>{
 
 
 export default class Questionnaire extends React.Component{
-   static navigationOptions = {title: 'Questionnaire',
-   headerLeft:()=> null};
+   static navigationOptions = {title: 'Questionnaire', headerLeft:()=> null, headerShown: false,};
    state = {
     hours: 0,
     mins: 0,
@@ -110,6 +109,7 @@ makeListManually =()=>{
   renderDropDown=()=>{
       return(
         <>
+        
         <DropDownPicker
           items={makeDropdownBreakNum()}
           containerStyle={{height: 40}}
@@ -137,7 +137,18 @@ makeListManually =()=>{
        const { navigate } = this.props.navigation; //props comes from App.js
 
        return(
-        <View style = {styles.container}>
+        <>
+          
+         <Header
+            centerComponent={<Image source={require("../assets/logo.png")} style={{ resizeMode: 'center'}} />}
+            containerStyle={{
+              backgroundColor: '#a5b7f9',
+              justifyContent: 'space-around',
+              width: '100%', height: '12%'
+            }}
+          />
+            
+          <ImageBackground source={require("../assets/background.png")} style={{ resizeMode: 'cover', width: '100%', height: '100%' }}>
           <DropDownPicker
             items={makeDropdown()}
             containerStyle={{height: 40}}
@@ -164,28 +175,13 @@ makeListManually =()=>{
               title= "Go to Timer Screen"
               onPress={() => navigate('Timer', {listoftimes: this.state.list})}
           />
-        </View>
+          </ImageBackground>
+        </>
        )
    }
 };
 
 
-
-function badEasyDropdown(){
-  let dropdown=
-  [
-{label:'Demo', value:-1},
-{label: '45 mins', value: 45,},
-{label: '1 hour', value: 60, },
-{label: '1 hour 15 mins', value: 75,},
-{label: '1 hour 30 mins', value: 90,},
-{label: '1 hour 45 mins', value: 105,},
-{label: '2 hours', value: 120,},
-{label: '2 hour 15 mins', value: 135,},
-{label: '2 hour 30 mins', value: 150,},
-];
-return dropdown
-};
 
 function makeDropdown(){
   let dropdown= Array.from(Array(64).keys())
