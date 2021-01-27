@@ -37,6 +37,7 @@ export default class Questionnaire extends React.Component{
     //workTimes:0,
     number:0,
     select:true,
+    timeChosen:false,
     list:[]
  }
  //submit button after hours and minutes
@@ -146,7 +147,8 @@ makeListManually =()=>{
             onChangeItem={
               (item)=>{this.setState ({
                 hours: parseInt(Math.floor(item.value/60)),
-                mins: parseInt(item.value%60)
+                mins: parseInt(item.value%60),
+                timeChosen: true
             })}}
           />
           <CheckBox clicks={this.state.number} select={this.state.select} changeState={this.changeState}/>
@@ -162,6 +164,7 @@ makeListManually =()=>{
 
           <Button
               title= "Go to Timer Screen"
+              disabled={!this.state.timeChosen}
               onPress={() => navigate('Timer', {listoftimes: this.state.list})}
           />
         </View>
