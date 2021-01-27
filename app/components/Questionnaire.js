@@ -191,6 +191,7 @@ function makeDropdown(){
   let dropdown= Array.from(Array(64).keys())
   dropdown=dropdown.map(x=>x*5+45)
   dropdown=dropdown.map(x=>{ return {label:parseInt(Math.floor(x/60))+" hours " + parseInt(x%60) +" mins ", value:x,}})
+  dropdown.unshift({label:'Demo', value:-1},)
   return dropdown
 };
 
