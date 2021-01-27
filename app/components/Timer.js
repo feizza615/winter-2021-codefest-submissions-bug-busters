@@ -6,14 +6,15 @@ import Notification from './Notification';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import Checklist from './Checklist';
 import GamePanel from './GamePanel';
+import { Overlay } from 'react-native-elements';
 
 LogBox.ignoreAllLogs();
 
-var status =true;
+
 const animatedValue1 = new Animated.Value(0);
-const animatedValue2 = new Animated.Value(0);
+
 export default class Timer extends React.Component{
-    static navigationOptions = {title: 'Timer',
+    static navigationOptions = {title: 'Timer',headerShown: false ,
     headerLeft:()=> null};
     render(){
         const createTwoButtonAlert = () =>
@@ -36,20 +37,26 @@ export default class Timer extends React.Component{
         ( accumulator, currentValue ) => accumulator + currentValue
       ,0)
       let end= Date.now()+sum*1000 //this doesn't work
-      if(status==true){
+
         return(
           <View style={styles.container}>
             <Text> Study session until {end.toLocaleString()} </Text>
             <Button title='Reset timer' onPress={createTwoButtonAlert}/>
             <NewTimer listoftimes={listoftimes}/>
+            <TouchableOpacity onPress={() => this._firstPanel.show()}><Text>Open First Panel</Text></TouchableOpacity>
+
+            <SlidingUpPanel
+        draggableRange={{ top: 600, bottom: 0 }} ref={(c) => this._firstPanel = c} animatedValue={animatedValue1}>
+        <View style={styles.slidingPanelContainer}>
+          <Checklist/>
+        </View>
+      </SlidingUpPanel>
           </View>
         )
-      }
+      
       
     }
 }
-
-
 
 const NewTimer =(props)=>{
   const [buttonClicked, setButtonClicked] = useState(false);
@@ -57,8 +64,8 @@ const NewTimer =(props)=>{
   const [i, setI]=useState(0) //counter of listoftimes
   const [seconds,setSeconds]=useState(props.listoftimes[i])
   const [notify, setNotify]=useState(false)
-  const [panel, setPanel] =useState(false)
-
+  const [gameOn, setGame] =useState(false)
+  const [visible, setVisible] = useState(false);
 
   //This function triggers a notification:
   const NotifyUser=()=>{
@@ -70,20 +77,25 @@ const NewTimer =(props)=>{
   }
 
   //This function disables and enables the button for the game panel:
-  const DisplayPanel=()=>{
+  const DisplayGame=()=>{
     if(i%2==0){
-      setPanel(true);
-      animatedValue2.setValue(0)
+      setGame(true);
+      setVisible(false)
+      
     }
     else if(i%2==1){
-      setPanel(false);
+      setGame(false);
+   
       
     }
     return null;
   }
-  
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
   useInterval(()=>{
-    DisplayPanel()
+    DisplayGame()
     if (!buttonClicked) return
     if(seconds>1){ //regular timer operations
       setSeconds(seconds-1)
@@ -117,24 +129,20 @@ const NewTimer =(props)=>{
       <Text>{timeLeftCalculator(seconds)} </Text>
       <Text>{timeAlert} </Text>
       <ProgressBar i={i}/>
+      <View>
+      <TouchableOpacity disabled={gameOn} onPress={toggleOverlay}>
+        <Text>Game Panel</Text>
+      </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => _firstPanel.show()}><Text>Open First Panel</Text></TouchableOpacity>
-      <TouchableOpacity disabled={panel} onPress={() => _secondPanel.show()}><Text>Open Second Panel</Text></TouchableOpacity>
-
-      <SlidingUpPanel
-        draggableRange={{ top: 600, bottom: 0 }} ref={(c) => _firstPanel = c} animatedValue={animatedValue1}>
-        <View style={styles.slidingPanelContainer}>
-          <Checklist/>
-        </View>
-      </SlidingUpPanel>
-
-      <SlidingUpPanel
-          draggableRange={{ top: 600, bottom: 0 }} ref={(c) => _secondPanel = c} animatedValue={animatedValue2}>
-        <View style={styles.slidingPanelContainer}>
+      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+        <View style={{ height: 300 , width: 300}}>
           <GamePanel/>
         </View>
-      </SlidingUpPanel>
-        
+      </Overlay>
+
+    </View>
+
+
  </>
   )
 
