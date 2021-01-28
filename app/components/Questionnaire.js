@@ -1,6 +1,6 @@
 
 import React,{useState} from 'react'
-import { Image, ImageBackground, StyleSheet, TouchableOpacity, TextInput, Text, View, Button, ScrollView,  } from 'react-native';
+import { TouchableHighlight, Image, ImageBackground, StyleSheet, TouchableOpacity, TextInput, Text, View, Button, ScrollView,  } from 'react-native';
 import Timer from './Timer'
 import DropDownPicker from 'react-native-dropdown-picker'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -165,11 +165,19 @@ makeListManually =()=>{
 
          <ImageBackground source={require("../assets/background.png")} style={{ resizeMode: 'cover', width: '100%', height: '100%' }}>
          <Header
-           centerComponent={<Image source={require("../assets/logo.png")} style={{ resizeMode: 'center'}} />}
-           containerStyle={{
-             backgroundColor: 'transparent',
-             justifyContent: 'space-around',
-             width: '100%', height: '15%', borderBottomColor:'transparent'
+          centerComponent={<Image source={require("../assets/logo.png")} style={{ height:'90%', width:'40%'}} />}
+          rightComponent={
+          <TouchableOpacity onPress={() => navigate('Timer', {listoftimes: this.state.list})}>
+              <Icon
+              size={50}
+              color={'white'}
+              name={'navigate-next'}
+            />
+          </TouchableOpacity>}           
+          containerStyle={{
+            height:95,
+            backgroundColor:'transparent',
+            borderBottomColor:'transparent'
            }}
          />
          <Text style={styles.questions}>How long would you like to study for?</Text>
@@ -207,15 +215,11 @@ makeListManually =()=>{
            style = {styles.submitButton}
            onPress = {() => this.state.select?this.makeListAuto():this.makeListManually()}
            >
-             <Text style={styles.submitButtonText}>View Breakdown</Text>
+             <Text style={styles.submitButtonText}>View Schedule</Text>
          </TouchableOpacity>
          </View>
          <Text> {this.state.list}</Text>
 
-         <Button
-             title= "Go to Timer Screen"
-             onPress={() => navigate('Timer', {listoftimes: this.state.list})}
-         />
          </ImageBackground>
        </>
       )}else {
@@ -241,7 +245,7 @@ const CheckBox =(props)=>{
                 color={'white'}
                 name={ selected ? 'check-box' : 'check-box-outline-blank'}
             />
-            <Text style={styles.reccomendation}> Enable Reccommended Breakdown</Text>
+            <Text style={styles.reccomendation}> Enable Recommended Schedule</Text>
             </TouchableOpacity>
             </View>
             </>
@@ -328,6 +332,13 @@ const styles = StyleSheet.create({
       borderBottomColor:"white",
       borderBottomEndRadius:1,
       borderBottomStartRadius:1
+
+    },    button:{
+      height:100,
+      paddingTop:30,
+      paddingBottom:30,
+      width:50,
+      justifyContent: "space-evenly"
 
     },
  });
