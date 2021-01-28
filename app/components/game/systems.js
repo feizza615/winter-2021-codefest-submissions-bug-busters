@@ -1,6 +1,26 @@
+import { Dimensions} from "react-native";
+import React from "react";
+import { Finger } from "./renderers";
 
-
-
+const Restart = (entities, { touches, dispatch, events}) => {
+  if (events.length){
+    for(let e=0; e<events.length; e++){
+      if (events[e].type === "restart" ){
+        const windowWidth = Dimensions.get('window').width;
+        const dotPlacement = windowWidth/3;
+        entities={
+          1: { selected:0, pairedB4: -1, color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+30),  Math.floor(Math.random()*(160)+20)], renderer: <Finger />}, //-- Notice that each entity has a unique id (required)
+          2: { selected:0, pairedB4: -1, color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+dotPlacement+30),Math.floor(Math.random()*(160)+20)], renderer: <Finger />}, //-- and a renderer property (optional). If no renderer
+          3: { selected:0, pairedB4: -1, color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+2*dotPlacement+30), Math.floor(Math.random()*(160)+20)], renderer: <Finger />}, //-- is supplied with the entity - it won't get displayed.
+          4: { selected:0, pairedB4: -1, color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+30), Math.floor(Math.random()*(160)+220)], renderer: <Finger />},
+          5: { selected:0, pairedB4: -1, color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+dotPlacement+30), Math.floor(Math.random()*(160)+220)], renderer: <Finger />},
+          6: { selected:0, pairedB4: -1, color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+2*dotPlacement+30), Math.floor(Math.random()*(160)+220)], renderer: <Finger />},
+        }
+      }
+    }
+  }
+  return entities
+};
 
 function getRandomIn(array) {
   return Math.floor(Math.random() * array.length);
@@ -74,4 +94,4 @@ const ChangeColor = (entities, { touches, dispatch, events}) => {
   return entities;
 };
 
-export { ChangeColor };
+export { ChangeColor, Restart };
