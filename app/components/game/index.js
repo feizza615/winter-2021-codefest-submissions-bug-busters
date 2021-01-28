@@ -28,7 +28,7 @@ import React, { PureComponent } from "react";
 import { Dimensions, TouchableOpacity, Button, View, AppRegistry, StyleSheet, StatusBar, Text } from "react-native";
 import { GameEngine, dispatch } from "react-native-game-engine";
 import { Finger } from "./renderers";
-import { ChangeColor } from "./systems"
+import { ChangeColor, Restart } from "./systems"
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -49,7 +49,7 @@ export default class BestGameEver extends PureComponent {
       <GameEngine
       ref={(ref) => { this.engine = ref; }}
         style={styles.container}
-        systems={[ChangeColor]}
+        systems={[ChangeColor, Restart]}
         entities={{
           1: { selected:0, pairedB4: -1, color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+30),  Math.floor(Math.random()*(160)+20)], renderer: <Finger />}, //-- Notice that each entity has a unique id (required)
           2: { selected:0, pairedB4: -1, color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+dotPlacement+30),Math.floor(Math.random()*(160)+20)], renderer: <Finger />}, //-- and a renderer property (optional). If no renderer
@@ -60,9 +60,16 @@ export default class BestGameEver extends PureComponent {
         }}>
         <StatusBar hidden={true} />
       </GameEngine>
-
-      <TouchableOpacity  onPress={() => { this.engine.dispatch({type:"next-move"})} }><Text>HIII</Text>
-          </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          this.engine.dispatch({type:"restart"})
+          //insert something that clears the drawings.....
+        } }>
+        <Text>Restart</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => { this.engine.dispatch({type:"next-move"})} }><Text>Next Move</Text>
+      </TouchableOpacity>
 
           </View>
 
