@@ -38,6 +38,9 @@ export default class Questionnaire extends React.Component{
     number:0,
     select:true,
     timeChosen:false,
+    processTime:false,
+    breakD1:false,
+    breakD2:false,
     list:[]
  }
  //submit button after hours and minutes
@@ -104,7 +107,8 @@ makeListManually =()=>{
 };
 
   changeState =()=>{
-      this.setState({select:!this.state.select});
+      this.setState({select:!this.state.select,
+                     processTime:!this.state.processTime});
   };
 
 
@@ -118,7 +122,8 @@ makeListManually =()=>{
           placeholder="Select how many breaks you want"
           onChangeItem={
             (item)=>{this.setState ({
-              breaks: item.value
+              breaks: item.value,
+              breakD1:true
           })}}/>
         <DropDownPicker
           items={makeDropdownBreaks()}
@@ -127,7 +132,8 @@ makeListManually =()=>{
           placeholder="Select how long each break will be"
           onChangeItem={
             (item)=>{this.setState ({
-              breakTimes: item.value
+              breakTimes: item.value,
+              breakD2:true
 
           })}}/>
         </>
@@ -148,14 +154,16 @@ makeListManually =()=>{
               (item)=>{this.setState ({
                 hours: parseInt(Math.floor(item.value/60)),
                 mins: parseInt(item.value%60),
-                timeChosen: true
+                timeChosen: true,
+                processTime: false
             })}}
           />
           <CheckBox clicks={this.state.number} select={this.state.select} changeState={this.changeState}/>
           {this.state.select?null:this.renderDropDown()}
           <TouchableOpacity
             style = {styles.submitButton}
-            onPress = {() => this.state.select?this.makeListAuto():this.makeListManually()}
+            onPress = {() => {this.state.select?this.makeListAuto():this.makeListManually();
+                           this.setState({processTime:true});}}
             >
             <Text style = {styles.submitButtonText}> Submit </Text>
           </TouchableOpacity>
@@ -164,14 +172,15 @@ makeListManually =()=>{
 
           <Button
               title= "Go to Timer Screen"
-              disabled={!this.state.timeChosen}
+              disabled={this.state.select
+                 ?(!this.state.timeChosen||!this.state.processTime)
+                 :(!this.state.timeChosen||!this.state.processTime||!this.state.breakD1||!this.state.breakD2)}
               onPress={() => navigate('Timer', {listoftimes: this.state.list})}
           />
         </View>
        )
    }
 };
-
 
 
 function badEasyDropdown(){
