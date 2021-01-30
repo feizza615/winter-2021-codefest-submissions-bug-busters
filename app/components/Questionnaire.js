@@ -21,6 +21,10 @@ export default class Questionnaire extends React.Component{
    //workTimes:0,
    number:0,
    select:true,
+   timeChosen:false,
+processTime:false,
+breakD1:false,
+breakD2:false,
    list:[],
    fontsLoaded: false,
 }
@@ -42,6 +46,7 @@ makeListAuto=()=>{
  let end45=[20,5,20]
  let mins=this.state.mins
  let hours = this.state.hours
+ 
  let list =[]
  if(mins==-1){
    list=[.25,.25,.25,.25]
@@ -124,9 +129,10 @@ makeListManually =()=>{
         }}
          placeholder=""
          onChangeItem={
-           (item)=>{this.setState ({
-             breaks: item.value
-         })}}/>
+          (item)=>{this.setState ({
+            breaks: item.value,
+            breakD1:true
+        })}}/>
       <Text style={styles.questions}>How long should each break be?</Text>
        <DropDownPicker
          items={makeDropdownBreaks()}
@@ -148,10 +154,11 @@ makeListManually =()=>{
         }}
          placeholder=""
          onChangeItem={
-           (item)=>{this.setState ({
-             breakTimes: item.value
-
-         })}}/>
+          (item)=>{this.setState ({
+            breakTimes: item.value,
+            breakD2:true
+        
+        })}}/>
        </>
      );
  }
@@ -165,7 +172,10 @@ makeListManually =()=>{
          <Header
           centerComponent={<Image source={require("../assets/logo.png")} style={{ height:'90%', width:'40%'}} />}
           rightComponent={
-          <TouchableOpacity onPress={() => navigate('Timer', {listoftimes: this.state.list})}>
+          <TouchableOpacity disabled={this.state.select
+            ?(!this.state.timeChosen||!this.state.processTime)
+            :(!this.state.timeChosen||!this.state.processTime||!this.state.breakD1||!this.state.breakD2)}
+         onPress={() => navigate('Timer', {listoftimes: this.state.list})}>
               <Icon
               size={30}
               color={'white'}
@@ -201,10 +211,12 @@ makeListManually =()=>{
             
         }}
            onChangeItem={
-             (item)=>{this.setState ({
-               hours: parseInt(Math.floor(item.value/60)),
-               mins: parseInt(item.value%60)
-           })}}
+            (item)=>{this.setState ({
+              hours: parseInt(Math.floor(item.value/60)),
+              mins: parseInt(item.value%60),
+              timeChosen: true,
+              processTime: false
+          })}}
          />
 
          <CheckBox clicks={this.state.number} select={this.state.select} changeState={this.changeState}/>
@@ -212,7 +224,8 @@ makeListManually =()=>{
            <View style={{paddingTop:20}}>
          <TouchableOpacity
            style = {styles.submitButton}
-           onPress = {() => this.state.select?this.makeListAuto():this.makeListManually()}
+           onPress = {() => {this.state.select?this.makeListAuto():this.makeListManually();
+            this.setState({processTime:true});}}
            >
              <Text style={styles.submitButtonText}>View Schedule</Text>
          </TouchableOpacity>
