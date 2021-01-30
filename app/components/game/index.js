@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFF"
   },
+  
 
   button:{
     alignSelf: 'flex-end',

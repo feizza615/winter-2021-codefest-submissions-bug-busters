@@ -22,9 +22,9 @@ export default class Questionnaire extends React.Component{
    number:0,
    select:true,
    timeChosen:false,
-processTime:false,
-breakD1:false,
-breakD2:false,
+  processTime:false,
+  breakD1:false,
+  breakD2:false,
    list:[],
    fontsLoaded: false,
 }
@@ -104,7 +104,23 @@ makeListManually =()=>{
      this.setState({select:!this.state.select});
  };
 
+SendText=()=>{
+  var text ="";
+  for(let i = 0; i<this.state.list.length;i++){
+    if(i%2==0){
+      text+= this.state.list[i] + " minute study session"
+    }
+    else if(i%2!=0){
+      text+= this.state.list[i] + " minute break session"
+    }
+    if(i!=this.state.list.length-1){
+      text+=" + "
+    }
 
+  }
+  return text
+  
+}
  renderDropDown=()=>{
      return(
        <>
@@ -180,7 +196,7 @@ makeListManually =()=>{
               size={30}
               color={'white'}
               name={'arrow-forward-ios'}
-              style={{paddingLeft:5, paddingTop:15}}
+              style={{paddingLeft:5, paddingTop:7}}
             />
           </TouchableOpacity>}           
           containerStyle={{
@@ -189,6 +205,7 @@ makeListManually =()=>{
             borderBottomColor:'transparent'
            }}
          />
+         <ScrollView>
          <Text style={styles.questions}>How long would you like to study for?</Text>
          <DropDownPicker
            items={makeDropdown()}
@@ -221,7 +238,7 @@ makeListManually =()=>{
 
          <CheckBox clicks={this.state.number} select={this.state.select} changeState={this.changeState}/>
          {this.state.select?null:this.renderDropDown()}
-           <View style={{paddingTop:20}}>
+          <View style={{paddingTop:20}}>
          <TouchableOpacity
            style = {styles.submitButton}
            onPress = {() => {this.state.select?this.makeListAuto():this.makeListManually();
@@ -230,8 +247,9 @@ makeListManually =()=>{
              <Text style={styles.submitButtonText}>View Schedule</Text>
          </TouchableOpacity>
          </View>
-         <Text> {this.state.list}</Text>
-
+ 
+          {this.state.processTime && <Text style={styles.schedule}> <this.SendText/></Text>}
+          </ScrollView>
          </ImageBackground>
        </>
       )}else {
@@ -303,6 +321,13 @@ const styles = StyleSheet.create({
       paddingTop:20,
       paddingLeft:15
     },
+    schedule: {
+      fontFamily:'NovaSquare',
+      color:'white',
+      fontSize:20,
+      paddingTop:40,
+      paddingLeft:10
+    },
     reccomendation: {
       fontFamily:'NovaSquare',
       color:'white',
@@ -325,7 +350,8 @@ const styles = StyleSheet.create({
       borderRadius:15,
       width:'60%',
       alignSelf:'center',
-      justifyContent:'center'
+      justifyContent:'center',
+
     },
     submitButtonText:{
       fontFamily:'NovaSquare',
@@ -333,7 +359,6 @@ const styles = StyleSheet.create({
       fontSize:25,
       justifyContent:'center',
       textAlign:'center'
- 
     },
     dropContainer:{
       backgroundColor:'transparent', 

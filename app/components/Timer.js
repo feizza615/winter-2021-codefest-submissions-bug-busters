@@ -5,8 +5,6 @@ import useInterval from '@use-it/interval';
 import Notification from './Notification';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import Checklist from './Checklist';
-import GamePanel from './GamePanel';
-import { Overlay } from 'react-native-elements';
 import {Header} from 'react-native-elements'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import AppLoading from 'expo-app-loading';
@@ -64,7 +62,7 @@ export default class Timer extends React.Component{
             size={30}
             color={'white'}
             name={'arrow-back-ios'}
-            style={{paddingLeft:5, paddingTop:15}}
+            style={{paddingLeft:5, paddingTop:7}}
           />
         </TouchableOpacity>} containerStyle={{
           height:95,
@@ -72,9 +70,11 @@ export default class Timer extends React.Component{
           borderBottomColor:'transparent'
           }}
         />
-          <Text> Study session until {end.toLocaleString()} </Text>
+          {/*<Text> Study session until {end.toLocaleString()} </Text>*/}
           <NewTimer listoftimes={listoftimes}/>
-          <TouchableOpacity onPress={() => this._firstPanel.show()}><Text>Open First Panel</Text></TouchableOpacity>
+          <TouchableOpacity style = {styles.startButton} onPress={() => this._firstPanel.show()}>
+            <Text style = {styles.startButtonText}>View Check List</Text>
+          </TouchableOpacity>
 
           <SlidingUpPanel
             draggableRange={{ top: 600, bottom: 0 }} ref={(c) => this._firstPanel = c} animatedValue={animatedValue1}>
@@ -94,7 +94,7 @@ export default class Timer extends React.Component{
 
 const NewTimer =(props)=>{
   const [buttonClicked, setButtonClicked] = useState(false);
-  const [timeAlert, setTimeAlert]= useState("Hasn't Started");
+  const [timeAlert, setTimeAlert]= useState("Start Timer to Begin");
   const [i, setI]=useState(0) //counter of listoftimes
   const [seconds,setSeconds]=useState(props.listoftimes[i])
   const [notify, setNotify]=useState(false)
@@ -110,34 +110,15 @@ const NewTimer =(props)=>{
    return null;
   }
 
-  //This function disables and enables the button for the game panel:
-  const DisplayGame=()=>{
-    if(i%2==0){
-      setGame(true);
-      setVisible(false)
-      
-    }
-    else if(i%2==1){
-      setGame(false);
-   
-      
-    }
-    return null;
-  }
-  const toggleOverlay = () => {
-    setVisible(!visible);
-  };
-
   useInterval(()=>{
-    DisplayGame()
     if (!buttonClicked) return
     if(seconds>1){ //regular timer operations
       setSeconds(seconds-1)
-      setTimeAlert((i%2) ? "take a break"  : "do work!")
+      setTimeAlert((i%2) ? "Take a Break!"  : "Study Session Has Started")
       return
     }
     if (i=== props.listoftimes.length-1){ //if end of timer
-      setTimeAlert("done")
+      setTimeAlert("Done!")
       setButtonClicked(false)
       //maybe clearInterval?
     }
@@ -153,27 +134,13 @@ const NewTimer =(props)=>{
 <>  
 
       <NotifyUser/>
-      <Button
-        onPress={()=>{
-          setButtonClicked(!buttonClicked);
-        }}
-        //disabled={buttonClicked}
-        title={buttonClicked ? "Pause" : "Start"}
-      />
-      <Text>{timeLeftCalculator(seconds)} </Text>
-      <Text>{timeAlert} </Text>
-      <ProgressBar i={i}/>
-      <View>
-      <TouchableOpacity disabled={gameOn} onPress={toggleOverlay}>
-        <Text>Game Panel</Text>
-      </TouchableOpacity>
-
-      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-        <View style={{ height: 300 , width: 300}}>
-          <GamePanel/>
-        </View>
-      </Overlay>
-
+      <View style={{justifyContent:"center"}}>
+        <Text style={styles.timerText}>{timeLeftCalculator(seconds)} </Text>
+        <Text style={styles.statusText}>{timeAlert} </Text>
+        <TouchableOpacity style = {styles.startButton} onPress={()=>{setButtonClicked(!buttonClicked);}}>
+          <Text style = {styles.startButtonText}>{buttonClicked ? "Pause" : "Start"}</Text>
+        </TouchableOpacity>
+      {/*<ProgressBar i={i}/>*/}
     </View>
 
 
@@ -204,6 +171,45 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
+    timerText: {
+      fontFamily:'NovaSquare',
+      color:'white',
+      fontSize:40,
+      fontWeight: 'bold',
+      textAlign:'center',
+      paddingVertical:45
+    },
+    statusText: {
+      fontFamily:'NovaSquare',
+      color:'white',
+      fontSize:25,
+      fontWeight: 'bold',
+      textAlign:'center',
+      paddingVertical:20,
+      paddingBottom:60
+     
+    },
+    startButtonText:{
+      fontFamily:'NovaSquare',
+      color:'white',
+      fontSize:25,
+      justifyContent:'center',
+      textAlign:'center',
+
+ 
+    },
+    startButton: {
+      marginVertical:10,
+      backgroundColor: '#38127a',
+      height: 60,
+     borderWidth:1,
+     borderColor:'white',
+     borderRadius:15,
+     width:'60%',
+     alignSelf:'center',
+     justifyContent:'center',
+ 
+   },
     slidingPanelContainer: {
       flex: 1,
       backgroundColor: '#FFF',
