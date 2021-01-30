@@ -49,7 +49,7 @@ makeListAuto=()=>{
  
  let list =[]
  if(mins==-1){
-   list=[.25,.25,.25,.25]
+   list=[0,.25,.25,.25,.25]
  }
  else if (hours!=0){
    list = new Array(hours-1).fill(reg60).flat()
@@ -111,7 +111,7 @@ SendText=()=>{
       text+= this.state.list[i] + " minute study session"
     }
     else if(i%2!=0){
-      text+= this.state.list[i] + " minute break session"
+      text+= this.state.list[i] + " minute break"
     }
     if(i!=this.state.list.length-1){
       text+=" + "
@@ -370,7 +370,8 @@ const styles = StyleSheet.create({
       borderBottomEndRadius:1,
       borderBottomStartRadius:1
 
-    },    button:{
+    },    
+    button:{
       height:100,
       paddingTop:30,
       paddingBottom:30,

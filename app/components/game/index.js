@@ -6,21 +6,38 @@ import { Dimensions, TouchableOpacity, Button, View, AppRegistry, StyleSheet, St
 import { GameEngine, dispatch } from "react-native-game-engine";
 import { Finger } from "./renderers";
 import { ChangeColor, Restart } from "./systems"
+import AppLoading from 'expo-app-loading';
+import * as Font from 'expo-font';
 
+let customFonts = {
+  'NovaSquare': require('../../assets/fonts/NovaSquare-Regular.ttf'),
+};
 
 const windowWidth = Dimensions.get('window').width;
 const dotPlacement = windowWidth/3;
+
 export default class BestGameEver extends PureComponent {
   constructor(props) {
     super(props);
     this.engine = null;
     this.state = {
-        running: true
+        running: true,
+        fontsLoaded: false
     }
 }
 
+async _loadFontsAsync() {
+  await Font.loadAsync(customFonts);
+  this.setState({ fontsLoaded: true });
+}
+
+componentDidMount() {
+  this._loadFontsAsync();
+}
+
+
   render() {
-    return (
+    if (this.state.fontsLoaded) {return(
       <View>
 
       <GameEngine
@@ -37,20 +54,23 @@ export default class BestGameEver extends PureComponent {
         }}>
         <StatusBar hidden={true} />
       </GameEngine>
+      <View style={{flexDirection:"row", backgroundColor:"white", justifyContent:"space-evenly", marginBottom: 10}}>
       <TouchableOpacity
         onPress={() => {
           this.engine.dispatch({type:"restart"})
           //insert something that clears the drawings.....
         } }>
-        <Text>Restart</Text>
+        <Text style={styles.text}>New Game</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => { this.engine.dispatch({type:"next-move"})} }><Text>Next Move</Text>
+        onPress={() => { this.engine.dispatch({type:"next-move"})} }><Text style={styles.text}>Next Move</Text>
       </TouchableOpacity>
-
+      </View>
           </View>
 
-    );
+    );}else {
+      return <AppLoading />;
+    }
   }
 }
 
@@ -59,8 +79,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFF"
   },
-  
-
+  text: {
+    fontFamily:'NovaSquare',
+    color:'#38127a',
+    fontSize: 20,
+    fontWeight: 'bold',
+    paddingLeft:5
+  },
   button:{
     alignSelf: 'flex-end',
     position: 'absolute',

@@ -80,8 +80,8 @@ const ChangeColor = (entities, { touches, dispatch, events}) => {
           dotTwo = entities[id2]
 
           //makes these two red
-          dotOne.color = 'red';
-          dotTwo.color = 'red';
+          dotOne.color = '#38127a';
+          dotTwo.color = '#38127a';
           //adds to the counter
           dotOne.selected = dotOne.selected + 1
           dotTwo.selected = dotTwo.selected + 1
