@@ -161,17 +161,16 @@ makeListManually =()=>{
 
       if (this.state.fontsLoaded) {return(
        <>
-         
-
          <ImageBackground source={require("../assets/background.png")} style={{ resizeMode: 'cover', width: '100%', height: '100%' }}>
          <Header
           centerComponent={<Image source={require("../assets/logo.png")} style={{ height:'90%', width:'40%'}} />}
           rightComponent={
           <TouchableOpacity onPress={() => navigate('Timer', {listoftimes: this.state.list})}>
               <Icon
-              size={50}
+              size={30}
               color={'white'}
-              name={'navigate-next'}
+              name={'arrow-forward-ios'}
+              style={{paddingLeft:5, paddingTop:15}}
             />
           </TouchableOpacity>}           
           containerStyle={{
