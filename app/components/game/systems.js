@@ -7,8 +7,10 @@ const Restart = (entities, { touches, dispatch, events}) => {
     for(let e=0; e<events.length; e++){
       if (events[e].type === "restart" ){
         const windowWidth = Dimensions.get('window').width;
+        const windowHeight = Dimensions.get('window').height;
         const dotPlacement = windowWidth/3;
-        const dotPlacement2 = windowWidth/4
+        const dotPlacement2 = windowWidth/4;
+        const dotPlacement3 = windowHeight/5;
         entities={
            1: { selected:0, pairedB4: -1, color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+30),  Math.floor(Math.random()*(dotPlacement3-80)+40)], renderer: <Finger />}, //-- Notice that each entity has a unique id (required)
           2: { selected:0, pairedB4: -1, color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+dotPlacement+30),Math.floor(Math.random()*(dotPlacement3-80)+40)], renderer: <Finger />}, //-- and a renderer property (optional). If no renderer
