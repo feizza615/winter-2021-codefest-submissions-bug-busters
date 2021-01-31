@@ -193,6 +193,18 @@ SendText=()=>{
          <ImageBackground source={require("../assets/background.png")} style={{ resizeMode: 'cover', width: '100%', height: '100%' }}>
          <Header
           centerComponent={<Image source={require("../assets/logo.png")} style={{ height:'90%', width:'40%'}} />}
+          rightComponent={
+          <TouchableOpacity disabled={this.state.select
+            ?(!this.state.timeChosen||!this.state.processTime)
+            :(!this.state.timeChosen||!this.state.processTime||!this.state.breakD1||!this.state.breakD2)}
+         onPress={() => navigate('Timer', {listoftimes: this.state.list})}>
+              <Icon
+              size={30}
+              color={'white'}
+              name={'arrow-forward-ios'}
+              style={{paddingLeft:5, paddingTop:7}}
+            />
+          </TouchableOpacity>}
           containerStyle={{
             height:95,
             backgroundColor:'transparent',
