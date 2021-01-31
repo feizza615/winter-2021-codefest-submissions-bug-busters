@@ -47,7 +47,7 @@ makeListAuto=()=>{
  let end45=[20,5,20]
  let mins=this.state.mins
  let hours = this.state.hours
- 
+
  let list =[]
  if(mins==-1){
    list=[0,.25,.25,.25,.25]
@@ -101,6 +101,9 @@ makeListManually =()=>{
  this.setState({list:list})
 };
 
+makeOpenEndedList=()=>{//NEW
+  this.setState({list:[-5]})
+};
 
  changeState =()=>{
      this.setState({select:!this.state.select});
@@ -121,7 +124,7 @@ SendText=()=>{
 
   }
   return text
-  
+
 }
  renderDropDown=()=>{
      return(
@@ -175,7 +178,7 @@ SendText=()=>{
           (item)=>{this.setState ({
             breakTimes: item.value,
             breakD2:true
-        
+
         })}}/>
        </>
      );
@@ -201,7 +204,7 @@ SendText=()=>{
               name={'arrow-forward-ios'}
               style={{paddingLeft:5, paddingTop:7}}
             />
-          </TouchableOpacity>}           
+          </TouchableOpacity>}
           containerStyle={{
             height:95,
             backgroundColor:'transparent',
@@ -228,7 +231,7 @@ SendText=()=>{
             fontFamily:'NovaSquare',
             textAlign: 'center',
             backgroundColor:'transparent',
-            
+
         }}
            onChangeItem={
             (item)=>{this.setState ({
@@ -251,8 +254,17 @@ SendText=()=>{
              <Text style={styles.submitButtonText}>View Schedule</Text>
          </TouchableOpacity>
          </View>
- 
+
           {this.state.processTime && <Text style={styles.schedule}> <this.SendText/></Text>}
+          <TouchableOpacity //NEW
+            style = {styles.submitButton}
+            onPress = {() => {this.makeOpenEndedList();
+              this.setState({processTime:false});
+             }}
+            >
+              <Text style={styles.submitButtonText}>Open-ended Sesh</Text>
+          </TouchableOpacity>{/*NEW*/}
+          {(this.state.list == -5) && <Text style={styles.schedule}>Let's start with 20 minutes of studying, then see how it goes :)</Text>}
           </ScrollView>
          </ImageBackground>
        </>
@@ -338,7 +350,7 @@ const styles = StyleSheet.create({
       fontSize:15,
     },
     container: {
-   
+
     },
     input: {
        margin: 15,
@@ -365,16 +377,16 @@ const styles = StyleSheet.create({
       textAlign:'center'
     },
     dropContainer:{
-      backgroundColor:'transparent', 
-      borderTopColor:'transparent', 
-      borderLeftColor:'transparent', 
-      borderRightColor:'transparent', 
-      borderBottomWidth:1, 
+      backgroundColor:'transparent',
+      borderTopColor:'transparent',
+      borderLeftColor:'transparent',
+      borderRightColor:'transparent',
+      borderBottomWidth:1,
       borderBottomColor:"white",
       borderBottomEndRadius:1,
       borderBottomStartRadius:1
 
-    },    
+    },
     button:{
       height:100,
       paddingTop:30,
