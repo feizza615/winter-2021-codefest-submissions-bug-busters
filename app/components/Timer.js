@@ -93,7 +93,7 @@ export default class Timer extends React.Component{
 }
 
 const NewTimer =(props)=>{
-  const [buttonClicked, setButtonClicked] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState(true);
   const [timeAlert, setTimeAlert]= useState("Start Timer to Begin");
   const [i, setI]=useState(0) //counter of listoftimes
   const [seconds,setSeconds]=useState(props.listoftimes[i])
