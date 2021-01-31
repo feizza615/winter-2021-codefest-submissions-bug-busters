@@ -189,19 +189,7 @@ SendText=()=>{
        <>
          <ImageBackground source={require("../assets/background.png")} style={{ resizeMode: 'cover', width: '100%', height: '100%' }}>
          <Header
-          centerComponent={<Image source={require("../assets/logo.png")} style={{ height:'90%', width:'40%'}} />}
-          rightComponent={
-          <TouchableOpacity disabled={this.state.select
-            ?(!this.state.timeChosen||!this.state.processTime)
-            :(!this.state.timeChosen||!this.state.processTime||!this.state.breakD1||!this.state.breakD2)}
-         onPress={() => navigate('Timer', {listoftimes: this.state.list})}>
-              <Icon
-              size={30}
-              color={'white'}
-              name={'arrow-forward-ios'}
-              style={{paddingLeft:5, paddingTop:7}}
-            />
-          </TouchableOpacity>}           
+          centerComponent={<Image source={require("../assets/logo.png")} style={{ height:'90%', width:'40%'}} />}           
           containerStyle={{
             height:95,
             backgroundColor:'transparent',
@@ -251,9 +239,21 @@ SendText=()=>{
              <Text style={styles.submitButtonText}>View Schedule</Text>
          </TouchableOpacity>
          </View>
- 
-          {this.state.processTime && <Text style={styles.schedule}> <this.SendText/></Text>}
-          </ScrollView>
+
+
+          {this.state.processTime && 
+          <View style={{paddingTop:20}}>
+            <TouchableOpacity style = {styles.submitButton} disabled={this.state.select
+                ?(!this.state.timeChosen||!this.state.processTime)
+                :(!this.state.timeChosen||!this.state.processTime||!this.state.breakD1||!this.state.breakD2)}
+            onPress={() => navigate('Timer', {listoftimes: this.state.list})}>
+                <Text style={styles.submitButtonText}>Go To Timer</Text>
+            </TouchableOpacity>
+         
+            <Text style={styles.schedule}> <this.SendText/></Text>
+         </View>}
+
+        </ScrollView>
          </ImageBackground>
        </>
       )}else {
