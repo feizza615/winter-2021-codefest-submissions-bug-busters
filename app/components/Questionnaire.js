@@ -51,7 +51,7 @@ makeListAuto=()=>{
 
  let list =[]
  if(mins==-1){
-   list=[0,.25,.25,.25,.25]
+   list=[.25,.25,.25,.25]
  }
  else if (hours!=0){
    list = new Array(hours-1).fill(reg60).flat()

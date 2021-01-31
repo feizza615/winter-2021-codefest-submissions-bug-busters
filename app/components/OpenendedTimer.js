@@ -96,7 +96,7 @@ const Openended =()=>{
   const [buttonClicked, setButtonClicked] = useState(true);
   const [timeAlert, setTimeAlert]= useState("Study Session Has Started");
   const [i, setI]=useState(0) //counter of listoftimes
-  const [seconds,setSeconds]=useState(3)
+  const [seconds,setSeconds]=useState(1200)
   const [notify, setNotify]=useState(false)
 
   //This function triggers a notification:
