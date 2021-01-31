@@ -15,6 +15,7 @@ let customFonts = {
 
 const windowWidth = Dimensions.get('window').width;
 const dotPlacement = windowWidth/3;
+const dotPlacement2 = windowWidth/4;
 
 export default class BestGameEver extends PureComponent {
   constructor(props) {
@@ -51,6 +52,10 @@ componentDidMount() {
           4: { selected:0, pairedB4: -1, color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+30), Math.floor(Math.random()*(160)+220)], renderer: <Finger />},
           5: { selected:0, pairedB4: -1, color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+dotPlacement+30), Math.floor(Math.random()*(160)+220)], renderer: <Finger />},
           6: { selected:0, pairedB4: -1, color:'pink' , position: [Math.floor(Math.random()*(dotPlacement-60)+2*dotPlacement+30), Math.floor(Math.random()*(160)+220)], renderer: <Finger />},
+          7: { selected:0, pairedB4: -1, color:'pink' , position: [Math.floor(Math.random()*(dotPlacement2-60)+30), Math.floor(Math.random()*(160)+420)], renderer: <Finger />},
+          8: { selected:0, pairedB4: -1, color:'pink' , position: [Math.floor(Math.random()*(dotPlacement2-60)+dotPlacement2+30), Math.floor(Math.random()*(160)+420)], renderer: <Finger />},
+          9: { selected:0, pairedB4: -1, color:'pink' , position: [Math.floor(Math.random()*(dotPlacement2-60)+2*dotPlacement2+30), Math.floor(Math.random()*(160)+420)], renderer: <Finger />},
+          10: { selected:0, pairedB4: -1, color:'pink' , position: [Math.floor(Math.random()*(dotPlacement2-60)+3*dotPlacement2+30), Math.floor(Math.random()*(160)+420)], renderer: <Finger />},
         }}>
         <StatusBar hidden={true} />
       </GameEngine>
