@@ -49,13 +49,15 @@ const OverlayExample = () => {
 };
 export default class Game extends React.Component{
     static navigationOptions = { headerShown: false ,title: 'Game'};
-
+    // state={
+    //   lines:[]};
     rewind=()=>{
       this._undo()
     }
     clear=()=>{
       this._clear()
     }
+
     //new
     //next=()=>{
       //this.next()
@@ -84,7 +86,7 @@ export default class Game extends React.Component{
 
            <View style={{flex: 1, backgroundColor:"white"}}>
 
-            
+
             <View style={{height: 520, borderBottomWidth:2,  borderTopWidth: 2,  }}>
               <RNDraw
               containerStyle={{
@@ -100,11 +102,18 @@ export default class Game extends React.Component{
                   next={(next) => {this._next = next}}
                   color={'#000000'}
                   strokeWidth={4}
-                  onChangeStrokes={(strokes) => console.log(strokes)}
+                  onChangeStrokes={(strokes) => {//this is good for debugging at the front-end
+                     // this.state.lines.push(strokes[strokes.length-1].props.d);
+                     // console.log(this.state.lines);
+                     // if(this.checkLine()){
+                     //    console.log("LINES detected");
+                     // }
+                  }
+               }
                 />
             </View>
 
-              
+
             <View style={{ flexDirection: "row" , backgroundColor: "white", justifyContent: "space-evenly"}}>
                 <TouchableOpacity onPress={this.rewind}>
                   <Icon name="undo" style= {styles.button} size={50}/>
