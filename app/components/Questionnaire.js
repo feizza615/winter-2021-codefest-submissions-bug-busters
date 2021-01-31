@@ -33,6 +33,7 @@ async _loadFontsAsync() {
   this.setState({ fontsLoaded: true });
 }
 
+
 componentDidMount() {
   this._loadFontsAsync();
 }
@@ -99,6 +100,7 @@ makeListManually =()=>{
  }
  this.setState({list:list})
 };
+
 
  changeState =()=>{
      this.setState({select:!this.state.select});
@@ -182,6 +184,7 @@ SendText=()=>{
   render(){
       const { navigate } = this.props.navigation; //props comes from App.js
 
+
       if (this.state.fontsLoaded) {return(
        <>
          <ImageBackground source={require("../assets/background.png")} style={{ resizeMode: 'cover', width: '100%', height: '100%' }}>
@@ -236,6 +239,7 @@ SendText=()=>{
           })}}
          />
 
+
          <CheckBox clicks={this.state.number} select={this.state.select} changeState={this.changeState}/>
          {this.state.select?null:this.renderDropDown()}
           <View style={{paddingTop:20}}>
@@ -256,6 +260,7 @@ SendText=()=>{
         return <AppLoading />;
       }
   }
+
 };
 
 
@@ -281,7 +286,6 @@ const CheckBox =(props)=>{
             </>
       )
 }
-
 
 function makeDropdown(){
   let dropdown= Array.from(Array(64).keys())

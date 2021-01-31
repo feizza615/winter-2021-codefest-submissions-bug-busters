@@ -92,7 +92,9 @@ const IntroOverlay = () => {
 
 export default class Game extends React.Component{
     static navigationOptions = { headerShown: false ,title: 'Game'};
-    state = {fontsLoaded: false}
+    state={
+    lines:[],
+    fontsLoaded: false};
 
     async _loadFontsAsync() {
       await Font.loadAsync(customFonts);
@@ -109,6 +111,7 @@ export default class Game extends React.Component{
     clear=()=>{
       this._clear()
     }
+
 
     render(){
         const { navigate, state } =this.props.navigation;
@@ -133,6 +136,7 @@ export default class Game extends React.Component{
           if (this.state.fontsLoaded) {return(
 <>
 
+
           <ImageBackground source={require("../assets/background.png")} style={{ resizeMode: 'cover', width: '100%', height: '100%' }}>
           <Header
            centerComponent={<Image source={require("../assets/logo.png")} style={{ height:'90%', width:'40%'}} />}           
@@ -156,8 +160,16 @@ export default class Game extends React.Component{
                   next={(next) => {this._next = next}}
                   color={'white'}
                   strokeWidth={4}
-                  onChangeStrokes={(strokes) => console.log(strokes)}
+                  onChangeStrokes={(strokes) => {//this is good for debugging at the front-end
+                     // this.state.lines.push(strokes[strokes.length-1].props.d);
+                     // console.log(this.state.lines);
+                     // if(this.checkLine()){
+                     //    console.log("LINES detected");
+                     // }
+                  }
+               }
                 />
+
             {/*<IntroOverlay/>*/}
             
             <View style={{ flexDirection: "row" , backgroundColor: "transparent", justifyContent: "space-evenly"}}>
