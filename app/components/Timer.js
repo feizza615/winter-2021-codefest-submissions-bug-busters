@@ -120,6 +120,7 @@ const NewTimer =(props)=>{
     if (i=== props.listoftimes.length-1){ //if end of timer
       setTimeAlert("Done!")
       setButtonClicked(false)
+      setSeconds(0)
       //maybe clearInterval?
     }
     else{ //when switching to next timer HERERERER

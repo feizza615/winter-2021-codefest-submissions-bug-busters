@@ -132,6 +132,7 @@ export default class Game extends React.Component{
  
           if (this.state.fontsLoaded) {return(
 <>
+
           <ImageBackground source={require("../assets/background.png")} style={{ resizeMode: 'cover', width: '100%', height: '100%' }}>
           <Header
            centerComponent={<Image source={require("../assets/logo.png")} style={{ height:'90%', width:'40%'}} />}           
@@ -141,7 +142,7 @@ export default class Game extends React.Component{
              borderBottomColor:'transparent'
             }}
           />
-
+            
               <RNDraw
               containerStyle={{
                 backgroundColor: 'transparent',
@@ -157,9 +158,8 @@ export default class Game extends React.Component{
                   strokeWidth={4}
                   onChangeStrokes={(strokes) => console.log(strokes)}
                 />
-
-
-            <IntroOverlay/>
+            {/*<IntroOverlay/>*/}
+            
             <View style={{ flexDirection: "row" , backgroundColor: "transparent", justifyContent: "space-evenly"}}>
                 <TouchableOpacity onPress={this.rewind}>
                   <Icon name="undo" style= {styles.button} color = {'white'} size={20}/>
@@ -174,8 +174,10 @@ export default class Game extends React.Component{
               <TouchableOpacity style = {styles.skipButton} onPress={createTwoButtonAlert}>
                 <Text style = {styles.skipButtonText}>Skip Game</Text>
               </TouchableOpacity>
-
+    
 </ImageBackground>
+
+
 </>
 
 )}else {
