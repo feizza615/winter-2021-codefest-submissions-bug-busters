@@ -19,10 +19,7 @@ const animatedValue1 = new Animated.Value(0);
 
 export default class Timer extends React.Component{
   static navigationOptions = {title: 'Timer',headerShown: false , headerLeft:()=> null};
-  state= {
-    fontsLoaded: false,
-    openended: false
-  }
+  state= {fontsLoaded: false}
   async _loadFontsAsync() {
     await Font.loadAsync(customFonts);
     this.setState({ fontsLoaded: true });
@@ -48,13 +45,7 @@ export default class Timer extends React.Component{
         { cancelable: false }
       );
     const { navigate, state } =this.props.navigation;
-    let listoftimes = state.params.listoftimes;
-    if ( listoftimes[0]== -5){ //NEW
-      this.setState({openended:true}) //works
-    }
-    else{
-      listoftimes=listoftimes.map(min=>min*60)//mins to seconds
-    }//NEW
+    let listoftimes=state.params.listoftimes.map(min=>min*60)//mins to seconds
     let sum = listoftimes.reduce(
       ( accumulator, currentValue ) => accumulator + currentValue
     ,0)
@@ -80,8 +71,7 @@ export default class Timer extends React.Component{
           }}
         />
           {/*<Text> Study session until {end.toLocaleString()} </Text>*/}
-          {this.state.openended? <Openended/>: <NewTimer listoftimes={listoftimes}/>} {/*new*/}
-
+          <NewTimer listoftimes={listoftimes}/>
           <TouchableOpacity style = {styles.startButton} onPress={() => this._firstPanel.show()}>
             <Text style = {styles.startButtonText}>View Check List</Text>
           </TouchableOpacity>
@@ -108,6 +98,8 @@ const NewTimer =(props)=>{
   const [i, setI]=useState(0) //counter of listoftimes
   const [seconds,setSeconds]=useState(props.listoftimes[i])
   const [notify, setNotify]=useState(false)
+  const [gameOn, setGame] =useState(false)
+  const [visible, setVisible] = useState(false);
 
   //This function triggers a notification:
   const NotifyUser=()=>{
@@ -136,10 +128,12 @@ const NewTimer =(props)=>{
       setSeconds(props.listoftimes[i+1])
       setI(i+1)
     }
+
   },1000)//makes it run every second
 
   return(
 <>
+
       <NotifyUser/>
       <View style={{justifyContent:"center"}}>
         <Text style={styles.timerText}>{timeLeftCalculator(seconds)} </Text>
@@ -149,63 +143,11 @@ const NewTimer =(props)=>{
         </TouchableOpacity>
       {/*<ProgressBar i={i}/>*/}
     </View>
+
+
  </>
   )
-}
 
-const Openended =()=>{
-  const [buttonClicked, setButtonClicked] = useState(false);
-  const [timeAlert, setTimeAlert]= useState("Start Timer to Begin");
-  const [i, setI]=useState(0) //counter of listoftimes
-  const [seconds,setSeconds]=useState(1200)
-  const [notify, setNotify]=useState(false)
-
-  //This function triggers a notification:
-  const NotifyUser=()=>{
-    if(notify==true){
-      setNotify(false);
-      Notification();
-    }
-   return null;
-  }
-
-  useInterval(()=>{
-    if (!buttonClicked) return //might get rid of this
-    if(seconds>1){ //regular timer operations
-      setSeconds(seconds-1)
-      //setTimeAlert((i%2) ? "Take a Break!"  : "Study Session Has Started") //this wont work...
-      return
-    }
-    if (i=== 1){ //if end of timer
-      setTimeAlert("Done!")//no
-      setButtonClicked(false)
-      setSeconds(0)
-    }
-    else{ //when switching to next timer
-      setNotify(true)
-      setSeconds(1200)
-      setI(1)
-    }
-  },1000)//makes it run every second
-
-  return(
-<>
-      <NotifyUser/>
-      <View style={{justifyContent:"center"}}>
-        <Text style={styles.timerText}>{timeLeftCalculator(seconds)} </Text>
-        <Text style={styles.statusText}>{timeAlert} </Text>
-        <TouchableOpacity style = {styles.startButton} onPress={()=>{setButtonClicked(!buttonClicked);}}>
-          <Text style = {styles.startButtonText}>{buttonClicked ? "Pause" : "Start"}</Text>
-        </TouchableOpacity>
-        {(seconds == 0) &&
-          <TouchableOpacity style = {styles.startButton} onPress={()=>{setSeconds(300);}}>
-            <Text style = {styles.startButtonText}>Do you want to continue studying after a 5 minute break?</Text>
-          </TouchableOpacity>
-        }
-      {/*<ProgressBar i={i}/>*/}
-    </View>
- </>
-  )
 }
 
 const ProgressBar=(props)=>{
