@@ -2,6 +2,7 @@
 import React,{useState} from 'react'
 import { TouchableHighlight, Image, ImageBackground, StyleSheet, TouchableOpacity, TextInput, Text, View, Button, ScrollView,  } from 'react-native';
 import Timer from './Timer'
+import OpenendedTimer from './OpenendedTimer'
 import DropDownPicker from 'react-native-dropdown-picker'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {Header} from 'react-native-elements'
@@ -47,7 +48,7 @@ makeListAuto=()=>{
  let end45=[20,5,20]
  let mins=this.state.mins
  let hours = this.state.hours
- 
+
  let list =[]
  if(mins==-1){
    list=[0,.25,.25,.25,.25]
@@ -101,6 +102,9 @@ makeListManually =()=>{
  this.setState({list:list})
 };
 
+makeOpenEndedList=()=>{//NEW
+  this.setState({list:[-5]})
+};
 
  changeState =()=>{
      this.setState({select:!this.state.select});
@@ -121,7 +125,7 @@ SendText=()=>{
 
   }
   return text
-  
+
 }
  renderDropDown=()=>{
      return(
@@ -175,7 +179,7 @@ SendText=()=>{
           (item)=>{this.setState ({
             breakTimes: item.value,
             breakD2:true
-        
+
         })}}/>
        </>
      );
@@ -189,7 +193,8 @@ SendText=()=>{
        <>
          <ImageBackground source={require("../assets/background.png")} style={{ resizeMode: 'cover', width: '100%', height: '100%' }}>
          <Header
-          centerComponent={<Image source={require("../assets/logo.png")} style={{ height:'90%', width:'40%'}} />}           
+          centerComponent={<Image source={require("../assets/logo.png")} style={{ height:'90%', width:'40%'}} />}
+
           containerStyle={{
             height:95,
             backgroundColor:'transparent',
@@ -197,72 +202,110 @@ SendText=()=>{
            }}
          />
          <ScrollView>
-         <Text style={styles.questions}>How long would you like to study for?</Text>
-         <DropDownPicker
-           items={makeDropdown()}
-           style={styles.dropContainer}
-           containerStyle={{height: 50, width:'70%', backgroundColor:'transparent', paddingLeft:10, alignContent:'center'}}
-           dropDownStyle={{ backgroundColor:'#38127a', alignContent:'center',alignSelf:'center'}}
-           placeholder=""
-           labelStyle={{
-            fontSize: 20,
-            fontFamily:'NovaSquare',
-            textAlign: 'center',
-            color: 'white',
-            backgroundColor:'transparent',
-        }}
-           placeholderStyle={{
-            color:'white',
-            fontFamily:'NovaSquare',
-            textAlign: 'center',
-            backgroundColor:'transparent',
-            
-        }}
-           onChangeItem={
-            (item)=>{this.setState ({
-              hours: parseInt(Math.floor(item.value/60)),
-              mins: parseInt(item.value%60),
-              timeChosen: true,
-              processTime: false
-          })}}
-         />
+
+           <Text style={styles.questions}>How long would you like to study for?</Text>
 
 
-         <CheckBox clicks={this.state.number} select={this.state.select} changeState={this.changeState}/>
-         {this.state.select?null:this.renderDropDown()}
-          <View style={{paddingTop:20}}>
-         <TouchableOpacity
-           style = {styles.submitButton}
-           onPress = {() => {this.state.select?this.makeListAuto():this.makeListManually();
-            this.setState({processTime:true});}}
-           >
-             <Text style={styles.submitButtonText}>View Schedule</Text>
-         </TouchableOpacity>
-         </View>
+           <DropDownPicker
+             items={makeDropdown()}
+             style={styles.dropContainer}
+             containerStyle={{height: 50, width:'70%', backgroundColor:'transparent', paddingLeft:10, alignContent:'center'}}
+             dropDownStyle={{ backgroundColor:'#38127a', alignContent:'center',alignSelf:'center'}}
+             placeholder=""
+             labelStyle={{
+              fontSize: 20,
+              fontFamily:'NovaSquare',
+              textAlign: 'center',
+              color: 'white',
+              backgroundColor:'transparent',
+          }}
+             placeholderStyle={{
+              color:'white',
+              fontFamily:'NovaSquare',
+              textAlign: 'center',
+              backgroundColor:'transparent',
+
+          }}
+             onChangeItem={
+              (item)=>{this.setState ({
+                hours: parseInt(Math.floor(item.value/60)),
+                mins: parseInt(item.value%60),
+                timeChosen: true,
+                processTime: false
+            })}}
+           />
 
 
-          {this.state.processTime && 
-          <View style={{paddingTop:20}}>
-            <TouchableOpacity style = {styles.submitButton} disabled={this.state.select
-                ?(!this.state.timeChosen||!this.state.processTime)
-                :(!this.state.timeChosen||!this.state.processTime||!this.state.breakD1||!this.state.breakD2)}
-            onPress={() => navigate('Timer', {listoftimes: this.state.list})}>
+           <CheckBox clicks={this.state.number} select={this.state.select} changeState={this.changeState}/>
+           {this.state.select?null:this.renderDropDown()}
+
+           {/*View Schedule Button*/}
+           <View style={{paddingTop:20}}>
+             <TouchableOpacity
+               style = {styles.submitButton}
+               onPress = {() => {
+                 this.state.select?this.makeListAuto():this.makeListManually();
+                 this.setState({processTime:true});
+               }}
+              >
+                 <Text style={styles.submitButtonText}>View Schedule</Text>
+             </TouchableOpacity>
+           </View>
+
+           {/*Text of what the schedule is*/}
+            {this.state.processTime &&
+              <Text style={styles.schedule}> <this.SendText/></Text>
+            }
+
+            {/*Open ended study session Button*/}
+            <TouchableOpacity
+              style = {styles.submitButton}
+              onPress={() => navigate('OpenendedTimer')}
+              >
+                <Text style={styles.submitButtonText}>Open-ended Sesh</Text>
+            </TouchableOpacity>{/*NEW*/}
+
+
+            {/*Go to timer regular Button*/}
+            {(this.state.processTime && this.state.timeChosen &&
+                (this.state.select ||
+                  (this.state.breakD1 && this.state.breakD2))) &&
+
+              /*<GoToTimer state = {this.state}/>*/
+              <View style={{paddingTop:20}}>
+                <TouchableOpacity
+                  style = {styles.submitButton}
+                  onPress={() => navigate('Timer', {listoftimes: this.state.list})}
+                >
                 <Text style={styles.submitButtonText}>Go To Timer</Text>
-            </TouchableOpacity>
-         
-            <Text style={styles.schedule}> <this.SendText/></Text>
-         </View>}
+                </TouchableOpacity>
+              </View>
+            }
 
-        </ScrollView>
+          </ScrollView>
          </ImageBackground>
        </>
-      )}else {
+      )}
+      else {
         return <AppLoading />;
       }
   }
-
 };
 
+const GoToTimer =(props)=>{
+  return(
+    <View style={{paddingTop:20}}>
+    <TouchableOpacity style = {styles.submitButton} disabled={props.state.select
+        ?(!props.state.timeChosen||!props.state.processTime)
+        :(!props.state.timeChosen||!props.state.processTime||!props.state.breakD1||!props.state.breakD2)}
+    onPress={() => navigate('Timer', {listoftimes: props.state.list})}>
+        <Text style={styles.submitButtonText}>Go To Timer</Text>
+    </TouchableOpacity>
+
+    <Text style={styles.schedule}> <props.SendText/></Text>
+ </View>
+)
+};
 
 const CheckBox =(props)=>{
       const [selected, setSelected] = useState(true);
@@ -338,7 +381,7 @@ const styles = StyleSheet.create({
       fontSize:15,
     },
     container: {
-   
+
     },
     input: {
        margin: 15,
@@ -365,16 +408,16 @@ const styles = StyleSheet.create({
       textAlign:'center'
     },
     dropContainer:{
-      backgroundColor:'transparent', 
-      borderTopColor:'transparent', 
-      borderLeftColor:'transparent', 
-      borderRightColor:'transparent', 
-      borderBottomWidth:1, 
+      backgroundColor:'transparent',
+      borderTopColor:'transparent',
+      borderLeftColor:'transparent',
+      borderRightColor:'transparent',
+      borderBottomWidth:1,
       borderBottomColor:"white",
       borderBottomEndRadius:1,
       borderBottomStartRadius:1
 
-    },    
+    },
     button:{
       height:100,
       paddingTop:30,
