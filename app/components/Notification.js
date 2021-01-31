@@ -4,6 +4,10 @@ import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 
+
+//The code in this file was taken from Expo Documentation on Notifications through Expo and was modified
+//Link to the documentation: https://docs.expo.io/push-notifications/overview/
+
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,

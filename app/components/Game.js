@@ -1,12 +1,19 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
-import { TouchableOpacity, StyleSheet, Button, Text, View, Alert } from 'react-native';
+import { ImageBackground, Image, TouchableOpacity, StyleSheet, Button, Text, View, Alert } from 'react-native';
 import { registerRootComponent } from 'expo';
 import RNDraw from 'rn-draw'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Swiper from 'react-native-swiper'
 import { Overlay } from 'react-native-elements';
+import {Header} from 'react-native-elements'
+import AppLoading from 'expo-app-loading';
+import * as Font from 'expo-font';
 
-const OverlayExample = () => {
+let customFonts = {
+  'NovaSquare': require('../assets/fonts/NovaSquare-Regular.ttf'),
+};
+
+const InstructionsOverlay = () => {
   const [visible, setVisible] = useState(false);
 
   const toggleOverlay = () => {
@@ -16,14 +23,15 @@ const OverlayExample = () => {
   return (
     <View>
       <TouchableOpacity onPress={toggleOverlay}>
-        <Icon name="question" style= {styles.button}  size={50}/>
+        <Icon name="question" style= {styles.button}   color = {'white'} size={20}/>
       </TouchableOpacity>
 
       <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
         <View style={{ height: 300 , width: 300}}>
           <Swiper style={styles.wrapper} showsButtons={false}>
             <View style={styles.slide}>
-              <Text style={styles.text}>Welcome to Connect All!</Text>
+            <Image source={require("../assets/logo.png")} style={{ height:'30%', width:'40%', marginBottom:30}} />
+              <Text style={styles.text}>Welcome to StudyTricks' Connect All!</Text>
             </View>
             <View style={styles.slide}>
               <Text style={styles.text}>Start by connecting the highlighted dots by drawing a line between them.</Text>
@@ -47,10 +55,56 @@ const OverlayExample = () => {
     </View>
   );
 };
+
+const IntroOverlay = () => {
+  const [visible, setVisible] = useState(true);
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
+  return (
+    <View>
+      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+        <View style={{ height: 300 , width: 300}}>
+          <Swiper style={styles.wrapper} showsButtons={false}>
+            <View style={styles.slide}>
+              <Text style={styles.text}>Welcome to Study Tricks!</Text>
+            </View>
+            <View style={styles.slide}>
+              <Text style={styles.text}>Do you feel like you can never get yourself to sit down and start doing schoolwork? Our revolutionary method is for you then!</Text>
+            </View>
+            <View style={styles.slide}>
+              <Text style={styles.text}>The way it works is that you first play a game, then start a timed study session. It's like having dessert before dinner, to get you to sit down at the table.</Text>
+            </View>
+            <View style={styles.slide}>
+              <Text style={styles.text}>By setting a clear end to how long you will be studying, and breaking it up into small sections (the Pomodoro method), you won't even notice how much time has passed!</Text>
+            </View>
+            <View style={styles.slide}>
+              <Text style={styles.text}>Click anywhere to start!</Text>
+            </View>
+          </Swiper>
+        </View>
+      </Overlay>
+    </View>
+  );
+};
+
 export default class Game extends React.Component{
     static navigationOptions = { headerShown: false ,title: 'Game'};
-    // state={
-    //   lines:[]};
+    state={
+    lines:[],
+    fontsLoaded: false};
+
+    async _loadFontsAsync() {
+      await Font.loadAsync(customFonts);
+      this.setState({ fontsLoaded: true });
+    }
+    
+    componentDidMount() {
+      this._loadFontsAsync();
+    }
+
     rewind=()=>{
       this._undo()
     }
@@ -58,11 +112,6 @@ export default class Game extends React.Component{
       this._clear()
     }
 
-    //new
-    //next=()=>{
-      //this.next()
-      //console.log("next");
-    //}
 
     render(){
         const { navigate, state } =this.props.navigation;
@@ -82,25 +131,34 @@ export default class Game extends React.Component{
             { cancelable: false }
           );
 
-        return(
 
-           <View style={{flex: 1, backgroundColor:"white"}}>
+ 
+          if (this.state.fontsLoaded) {return(
+<>
 
 
-            <View style={{height: 520, borderBottomWidth:2,  borderTopWidth: 2,  }}>
+          <ImageBackground source={require("../assets/background.png")} style={{ resizeMode: 'cover', width: '100%', height: '100%' }}>
+          <Header
+           centerComponent={<Image source={require("../assets/logo.png")} style={{ height:'90%', width:'40%'}} />}           
+           containerStyle={{
+             height:95,
+             backgroundColor:'transparent',
+             borderBottomColor:'transparent'
+            }}
+          />
+            
               <RNDraw
               containerStyle={{
-                backgroundColor: '#FFF',
-                width: 400,
-                height: 400,
+                backgroundColor: 'transparent',
+                borderTopColor: 'white',
+                borderBottomColor: 'white',
+                borderWidth:1,
                 }}
-
                   strokes={[]}
-                  containerStyle={{backgroundColor: 'white'}}
                   rewind={(undo) => {this._undo = undo}}
                   clear={(clear) => {this._clear = clear}}
                   next={(next) => {this._next = next}}
-                  color={'#000000'}
+                  color={'white'}
                   strokeWidth={4}
                   onChangeStrokes={(strokes) => {//this is good for debugging at the front-end
                      // this.state.lines.push(strokes[strokes.length-1].props.d);
@@ -111,38 +169,41 @@ export default class Game extends React.Component{
                   }
                }
                 />
-            </View>
 
-
-            <View style={{ flexDirection: "row" , backgroundColor: "white", justifyContent: "space-evenly"}}>
+            {/*<IntroOverlay/>*/}
+            
+            <View style={{ flexDirection: "row" , backgroundColor: "transparent", justifyContent: "space-evenly"}}>
                 <TouchableOpacity onPress={this.rewind}>
-                  <Icon name="undo" style= {styles.button} size={50}/>
+                  <Icon name="undo" style= {styles.button} color = {'white'} size={20}/>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={this.clear}>
-                  <Icon name="forward" style= {styles.button}  size={50}/>
+                  <Icon name="eraser" style= {styles.button}  color = {'white'} size={20}/>
                 </TouchableOpacity>
-                <OverlayExample/>
+                <InstructionsOverlay/>
               </View>
 
+              <TouchableOpacity style = {styles.skipButton} onPress={createTwoButtonAlert}>
+                <Text style = {styles.skipButtonText}>Skip Game</Text>
+              </TouchableOpacity>
+    
+</ImageBackground>
 
-              <View style={styles.skip}>
-                  <Button color="black" title='Skip Game' onPress={createTwoButtonAlert}/>
-              </View>
 
-            </View>
+</>
 
-
-        )
+)}else {
+  return <AppLoading />;
+}
     }
 }
 registerRootComponent(Game);
 const styles = StyleSheet.create({
     button:{
-      height:100,
-      paddingTop:30,
+      height:30,
+      paddingTop:10,
       paddingBottom:30,
-      width:50,
+      width:'100%',
       justifyContent: "space-evenly"
 
     },
@@ -160,11 +221,31 @@ const styles = StyleSheet.create({
     paddingLeft: 18,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white'
+    backgroundColor: '#38127a',
   },
   text: {
-    color: 'black',
+    fontFamily:'NovaSquare',
+    color:'white',
     fontSize: 20,
     fontWeight: 'bold'
-  }
+  },
+  skipButton: {
+    backgroundColor: '#38127a',
+    height: 30,
+   borderWidth:1,
+   borderColor:'white',
+   borderRadius:15,
+   width:'30%',
+   alignSelf:'center',
+   justifyContent:'center',
+   margin:5
+
+ },
+ skipButtonText:{
+   fontFamily:'NovaSquare',
+   color:'white',
+   fontSize:15,
+   justifyContent:'center',
+   textAlign:'center'
+ },
   });

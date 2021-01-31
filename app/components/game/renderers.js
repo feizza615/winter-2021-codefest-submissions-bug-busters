@@ -15,7 +15,7 @@ class Finger extends PureComponent {
 
 const styles = StyleSheet.create({
   finger: {
-    borderColor: "#CCC",
+    borderColor: "white",
     borderWidth: 4,
     borderRadius: RADIUS * 2,
     width: RADIUS * 2,
