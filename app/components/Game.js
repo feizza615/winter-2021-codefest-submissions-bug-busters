@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Swiper from 'react-native-swiper'
 import { Overlay } from 'react-native-elements';
 
-const OverlayExample = () => {
+const InstructionsOverlay = () => {
   const [visible, setVisible] = useState(false);
 
   const toggleOverlay = () => {
@@ -47,6 +47,41 @@ const OverlayExample = () => {
     </View>
   );
 };
+
+const IntroOverlay = () => {
+  const [visible, setVisible] = useState(true);
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
+  return (
+    <View>
+      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+        <View style={{ height: 300 , width: 300}}>
+          <Swiper style={styles.wrapper} showsButtons={false}>
+            <View style={styles.slide}>
+              <Text style={styles.text}>Welcome to Study Tricks!</Text>
+            </View>
+            <View style={styles.slide}>
+              <Text style={styles.text}>Do you feel like you can never get yourself to sit down and start doing schoolwork? Our revolutionary method is for you then!</Text>
+            </View>
+            <View style={styles.slide}>
+              <Text style={styles.text}>The way it works is that you first play a game, then start a timed study session. It's like having dessert before dinner, to get you to sit down at the table.</Text>
+            </View>
+            <View style={styles.slide}>
+              <Text style={styles.text}>By setting a clear end to how long you will be studying, and breaking it up into small sections (the Pomodoro method), you won't even notice how much time has passed!</Text>
+            </View>
+            <View style={styles.slide}>
+              <Text style={styles.text}>Click anywhere to start!</Text>
+            </View>
+          </Swiper>
+        </View>
+      </Overlay>
+    </View>
+  );
+};
+
 export default class Game extends React.Component{
     static navigationOptions = { headerShown: false ,title: 'Game'};
 
@@ -56,11 +91,6 @@ export default class Game extends React.Component{
     clear=()=>{
       this._clear()
     }
-    //new
-    //next=()=>{
-      //this.next()
-      //console.log("next");
-    //}
 
     render(){
         const { navigate, state } =this.props.navigation;
@@ -84,7 +114,7 @@ export default class Game extends React.Component{
 
            <View style={{flex: 1, backgroundColor:"white"}}>
 
-            
+
             <View style={{height: 520, borderBottomWidth:2,  borderTopWidth: 2,  }}>
               <RNDraw
               containerStyle={{
@@ -104,7 +134,7 @@ export default class Game extends React.Component{
                 />
             </View>
 
-              
+            <IntroOverlay/>
             <View style={{ flexDirection: "row" , backgroundColor: "white", justifyContent: "space-evenly"}}>
                 <TouchableOpacity onPress={this.rewind}>
                   <Icon name="undo" style= {styles.button} size={50}/>
@@ -113,7 +143,7 @@ export default class Game extends React.Component{
                 <TouchableOpacity onPress={this.clear}>
                   <Icon name="forward" style= {styles.button}  size={50}/>
                 </TouchableOpacity>
-                <OverlayExample/>
+                <InstructionsOverlay/>
               </View>
 
 
