@@ -47,7 +47,7 @@ makeListAuto=()=>{
  let end45=[20,5,20]
  let mins=this.state.mins
  let hours = this.state.hours
- 
+
  let list =[]
  if(mins==-1){
    list=[0,.25,.25,.25,.25]
@@ -101,6 +101,9 @@ makeListManually =()=>{
  this.setState({list:list})
 };
 
+makeOpenEndedList=()=>{//NEW
+  this.setState({list:[-5]})
+};
 
  changeState =()=>{
      this.setState({select:!this.state.select});
@@ -121,7 +124,7 @@ SendText=()=>{
 
   }
   return text
-  
+
 }
  renderDropDown=()=>{
      return(
@@ -175,7 +178,7 @@ SendText=()=>{
           (item)=>{this.setState ({
             breakTimes: item.value,
             breakD2:true
-        
+
         })}}/>
        </>
      );
@@ -189,7 +192,7 @@ SendText=()=>{
        <>
          <ImageBackground source={require("../assets/background.png")} style={{ resizeMode: 'cover', width: '100%', height: '100%' }}>
          <Header
-          centerComponent={<Image source={require("../assets/logo.png")} style={{ height:'90%', width:'40%'}} />}           
+          centerComponent={<Image source={require("../assets/logo.png")} style={{ height:'90%', width:'40%'}} />}
           containerStyle={{
             height:95,
             backgroundColor:'transparent',
@@ -216,7 +219,7 @@ SendText=()=>{
             fontFamily:'NovaSquare',
             textAlign: 'center',
             backgroundColor:'transparent',
-            
+
         }}
            onChangeItem={
             (item)=>{this.setState ({
@@ -240,8 +243,7 @@ SendText=()=>{
          </TouchableOpacity>
          </View>
 
-
-          {this.state.processTime && 
+          {this.state.processTime &&
           <View style={{paddingTop:20}}>
             <TouchableOpacity style = {styles.submitButton} disabled={this.state.select
                 ?(!this.state.timeChosen||!this.state.processTime)
@@ -249,11 +251,23 @@ SendText=()=>{
             onPress={() => navigate('Timer', {listoftimes: this.state.list})}>
                 <Text style={styles.submitButtonText}>Go To Timer</Text>
             </TouchableOpacity>
-         
+
             <Text style={styles.schedule}> <this.SendText/></Text>
          </View>}
 
         </ScrollView>
+
+          <TouchableOpacity //NEW
+            style = {styles.submitButton}
+            onPress = {() => {this.makeOpenEndedList();
+              this.setState({processTime:false});
+             }}
+            >
+              <Text style={styles.submitButtonText}>Open-ended Sesh</Text>
+          </TouchableOpacity>{/*NEW*/}
+          {(this.state.list == -5) && <Text style={styles.schedule}>Let's start with 20 minutes of studying, then see how it goes :)</Text>}
+          </ScrollView>
+
          </ImageBackground>
        </>
       )}else {
@@ -338,7 +352,7 @@ const styles = StyleSheet.create({
       fontSize:15,
     },
     container: {
-   
+
     },
     input: {
        margin: 15,
@@ -365,16 +379,16 @@ const styles = StyleSheet.create({
       textAlign:'center'
     },
     dropContainer:{
-      backgroundColor:'transparent', 
-      borderTopColor:'transparent', 
-      borderLeftColor:'transparent', 
-      borderRightColor:'transparent', 
-      borderBottomWidth:1, 
+      backgroundColor:'transparent',
+      borderTopColor:'transparent',
+      borderLeftColor:'transparent',
+      borderRightColor:'transparent',
+      borderBottomWidth:1,
       borderBottomColor:"white",
       borderBottomEndRadius:1,
       borderBottomStartRadius:1
 
-    },    
+    },
     button:{
       height:100,
       paddingTop:30,
