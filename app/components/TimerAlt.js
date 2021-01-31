@@ -48,11 +48,12 @@ export default class Timer extends React.Component{
         { cancelable: false }
       );
     const { navigate, state } =this.props.navigation;
-    if (state.params.listoftimes == [-5]){ //NEW
-      this.setState({openended:true})
+    let listoftimes = state.params.listoftimes;
+    if ( listoftimes[0]== -5){ //NEW
+      this.setState({openended:true}) //works
     }
     else{
-      let listoftimes=state.params.listoftimes.map(min=>min*60)//mins to seconds
+      listoftimes=listoftimes.map(min=>min*60)//mins to seconds
     }//NEW
     let sum = listoftimes.reduce(
       ( accumulator, currentValue ) => accumulator + currentValue
@@ -107,8 +108,6 @@ const NewTimer =(props)=>{
   const [i, setI]=useState(0) //counter of listoftimes
   const [seconds,setSeconds]=useState(props.listoftimes[i])
   const [notify, setNotify]=useState(false)
-  const [gameOn, setGame] =useState(false)
-  const [visible, setVisible] = useState(false);
 
   //This function triggers a notification:
   const NotifyUser=()=>{
@@ -160,8 +159,6 @@ const Openended =()=>{
   const [i, setI]=useState(0) //counter of listoftimes
   const [seconds,setSeconds]=useState(1200)
   const [notify, setNotify]=useState(false)
-  const [gameOn, setGame] =useState(false)
-  const [visible, setVisible] = useState(false);
 
   //This function triggers a notification:
   const NotifyUser=()=>{
@@ -173,22 +170,21 @@ const Openended =()=>{
   }
 
   useInterval(()=>{
-    if (!buttonClicked) return
+    if (!buttonClicked) return //might get rid of this
     if(seconds>1){ //regular timer operations
       setSeconds(seconds-1)
-      setTimeAlert((i%2) ? "Take a Break!"  : "Study Session Has Started")
+      //setTimeAlert((i%2) ? "Take a Break!"  : "Study Session Has Started") //this wont work...
       return
     }
-    if (i=== props.listoftimes.length-1){ //if end of timer
-      setTimeAlert("Done!")
+    if (i=== 1){ //if end of timer
+      setTimeAlert("Done!")//no
       setButtonClicked(false)
       setSeconds(0)
-      //maybe clearInterval?
     }
-    else{ //when switching to next timer HERERERER
+    else{ //when switching to next timer
       setNotify(true)
-      setSeconds(props.listoftimes[i+1])
-      setI(i+1)
+      setSeconds(1200)
+      setI(1)
     }
   },1000)//makes it run every second
 
@@ -201,6 +197,11 @@ const Openended =()=>{
         <TouchableOpacity style = {styles.startButton} onPress={()=>{setButtonClicked(!buttonClicked);}}>
           <Text style = {styles.startButtonText}>{buttonClicked ? "Pause" : "Start"}</Text>
         </TouchableOpacity>
+        {(seconds == 0) &&
+          <TouchableOpacity style = {styles.startButton} onPress={()=>{setSeconds(300);}}>
+            <Text style = {styles.startButtonText}>Do you want to continue studying after a 5 minute break?</Text>
+          </TouchableOpacity>
+        }
       {/*<ProgressBar i={i}/>*/}
     </View>
  </>

@@ -193,18 +193,7 @@ SendText=()=>{
          <ImageBackground source={require("../assets/background.png")} style={{ resizeMode: 'cover', width: '100%', height: '100%' }}>
          <Header
           centerComponent={<Image source={require("../assets/logo.png")} style={{ height:'90%', width:'40%'}} />}
-          rightComponent={
-          <TouchableOpacity disabled={this.state.select
-            ?(!this.state.timeChosen||!this.state.processTime)
-            :(!this.state.timeChosen||!this.state.processTime||!this.state.breakD1||!this.state.breakD2)}
-         onPress={() => navigate('Timer', {listoftimes: this.state.list})}>
-              <Icon
-              size={30}
-              color={'white'}
-              name={'arrow-forward-ios'}
-              style={{paddingLeft:5, paddingTop:7}}
-            />
-          </TouchableOpacity>}
+
           containerStyle={{
             height:95,
             backgroundColor:'transparent',
@@ -212,83 +201,117 @@ SendText=()=>{
            }}
          />
          <ScrollView>
-         <Text style={styles.questions}>How long would you like to study for?</Text>
-         <DropDownPicker
-           items={makeDropdown()}
-           style={styles.dropContainer}
-           containerStyle={{height: 50, width:'70%', backgroundColor:'transparent', paddingLeft:10, alignContent:'center'}}
-           dropDownStyle={{ backgroundColor:'#38127a', alignContent:'center',alignSelf:'center'}}
-           placeholder=""
-           labelStyle={{
-            fontSize: 20,
-            fontFamily:'NovaSquare',
-            textAlign: 'center',
-            color: 'white',
-            backgroundColor:'transparent',
-        }}
-           placeholderStyle={{
-            color:'white',
-            fontFamily:'NovaSquare',
-            textAlign: 'center',
-            backgroundColor:'transparent',
 
-        }}
-           onChangeItem={
-            (item)=>{this.setState ({
-              hours: parseInt(Math.floor(item.value/60)),
-              mins: parseInt(item.value%60),
-              timeChosen: true,
-              processTime: false
-          })}}
-         />
+           <Text style={styles.questions}>How long would you like to study for?</Text>
 
 
-         <CheckBox clicks={this.state.number} select={this.state.select} changeState={this.changeState}/>
-         {this.state.select?null:this.renderDropDown()}
-          <View style={{paddingTop:20}}>
-         <TouchableOpacity
-           style = {styles.submitButton}
-           onPress = {() => {this.state.select?this.makeListAuto():this.makeListManually();
-            this.setState({processTime:true});}}
-           >
-             <Text style={styles.submitButtonText}>View Schedule</Text>
-         </TouchableOpacity>
-         </View>
+           <DropDownPicker
+             items={makeDropdown()}
+             style={styles.dropContainer}
+             containerStyle={{height: 50, width:'70%', backgroundColor:'transparent', paddingLeft:10, alignContent:'center'}}
+             dropDownStyle={{ backgroundColor:'#38127a', alignContent:'center',alignSelf:'center'}}
+             placeholder=""
+             labelStyle={{
+              fontSize: 20,
+              fontFamily:'NovaSquare',
+              textAlign: 'center',
+              color: 'white',
+              backgroundColor:'transparent',
+          }}
+             placeholderStyle={{
+              color:'white',
+              fontFamily:'NovaSquare',
+              textAlign: 'center',
+              backgroundColor:'transparent',
 
-          {this.state.processTime &&
-          <View style={{paddingTop:20}}>
-            <TouchableOpacity style = {styles.submitButton} disabled={this.state.select
-                ?(!this.state.timeChosen||!this.state.processTime)
-                :(!this.state.timeChosen||!this.state.processTime||!this.state.breakD1||!this.state.breakD2)}
-            onPress={() => navigate('Timer', {listoftimes: this.state.list})}>
+          }}
+             onChangeItem={
+              (item)=>{this.setState ({
+                hours: parseInt(Math.floor(item.value/60)),
+                mins: parseInt(item.value%60),
+                timeChosen: true,
+                processTime: false
+            })}}
+           />
+
+
+           <CheckBox clicks={this.state.number} select={this.state.select} changeState={this.changeState}/>
+           {this.state.select?null:this.renderDropDown()}
+
+           {/*View Schedule Button*/}
+           <View style={{paddingTop:20}}>
+             <TouchableOpacity
+               style = {styles.submitButton}
+               onPress = {() => {
+                 this.state.select?this.makeListAuto():this.makeListManually();
+                 this.setState({processTime:true});
+               }}
+              >
+                 <Text style={styles.submitButtonText}>View Schedule</Text>
+             </TouchableOpacity>
+           </View>
+
+           {/*Text of what the schedule is*/}
+            {this.state.processTime &&
+              <Text style={styles.schedule}> <this.SendText/></Text>
+            }
+
+            {/*Open ended study session Button*/}
+            <TouchableOpacity
+              style = {styles.submitButton}
+              onPress = {() => {this.makeOpenEndedList();
+                this.setState({processTime:false});
+               }}
+              >
+                <Text style={styles.submitButtonText}>Open-ended Sesh</Text>
+            </TouchableOpacity>{/*NEW*/}
+
+            {(this.state.list == -5) &&
+              <Text style={styles.schedule}>Let's start with 20 minutes of studying, then see how it goes :)</Text>
+            }
+
+            {/*Go to timer Button*/}
+            {(
+              (this.state.list == -5) ||
+              (this.state.processTime && this.state.timeChosen &&
+                (this.state.select ||
+                  (this.state.breakD1 && this.state.breakD2)))) &&
+
+              /*<GoToTimer state = {this.state}/>*/
+              <View style={{paddingTop:20}}>
+                <TouchableOpacity
+                  style = {styles.submitButton}
+                  onPress={() => navigate('Timer', {listoftimes: this.state.list})}
+                >
                 <Text style={styles.submitButtonText}>Go To Timer</Text>
-            </TouchableOpacity>
+                </TouchableOpacity>
+              </View>
+            }
 
-            <Text style={styles.schedule}> <this.SendText/></Text>
-         </View>}
-
-        </ScrollView>
-
-          <TouchableOpacity //NEW
-            style = {styles.submitButton}
-            onPress = {() => {this.makeOpenEndedList();
-              this.setState({processTime:false});
-             }}
-            >
-              <Text style={styles.submitButtonText}>Open-ended Sesh</Text>
-          </TouchableOpacity>{/*NEW*/}
-          {(this.state.list == -5) && <Text style={styles.schedule}>Let's start with 20 minutes of studying, then see how it goes :)</Text>}
           </ScrollView>
-
          </ImageBackground>
        </>
-      )}else {
+      )}
+      else {
         return <AppLoading />;
       }
   }
-
 };
 
+const GoToTimer =(props)=>{
+  return(
+    <View style={{paddingTop:20}}>
+    <TouchableOpacity style = {styles.submitButton} disabled={props.state.select
+        ?(!props.state.timeChosen||!props.state.processTime)
+        :(!props.state.timeChosen||!props.state.processTime||!props.state.breakD1||!props.state.breakD2)}
+    onPress={() => navigate('Timer', {listoftimes: props.state.list})}>
+        <Text style={styles.submitButtonText}>Go To Timer</Text>
+    </TouchableOpacity>
+
+    <Text style={styles.schedule}> <props.SendText/></Text>
+ </View>
+)
+};
 
 const CheckBox =(props)=>{
       const [selected, setSelected] = useState(true);
