@@ -22,6 +22,10 @@ const InstructionsOverlay = () => {
 
   return (
     <View>
+      <TouchableOpacity onPress={toggleOverlay}>
+        <Icon name="question" style= {styles.button}   color = {'white'} size={20}/>
+      </TouchableOpacity>
+
       <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
         <View style={{ height: 300 , width: 300}}>
           <Swiper style={styles.wrapper} showsButtons={false}>
@@ -173,10 +177,8 @@ export default class Game extends React.Component{
                }
                 />
 
-<Text>Strikes:{this.state.strikeNum}</Text>
-            {/*<IntroOverlay/>*/}
-
-
+<Text style={styles.skipButtonText}>Strikes:{this.state.strikeNum}</Text>
+  
             <View style={{ flexDirection: "row" , backgroundColor: "transparent", justifyContent: "space-evenly"}}>
                 <TouchableOpacity onPress={this.rewind}>
                   <Icon name="undo" style= {styles.button} color = {'white'} size={20}/>
