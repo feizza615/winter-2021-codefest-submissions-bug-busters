@@ -2,6 +2,7 @@
 import React,{useState} from 'react'
 import { TouchableHighlight, Image, ImageBackground, StyleSheet, TouchableOpacity, TextInput, Text, View, Button, ScrollView,  } from 'react-native';
 import Timer from './Timer'
+import OpenendedTimer from './OpenendedTimer'
 import DropDownPicker from 'react-native-dropdown-picker'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {Header} from 'react-native-elements'
@@ -50,7 +51,7 @@ makeListAuto=()=>{
 
  let list =[]
  if(mins==-1){
-   list=[0,.25,.25,.25,.25]
+   list=[.25,.25,.25,.25]
  }
  else if (hours!=0){
    list = new Array(hours-1).fill(reg60).flat()
@@ -259,23 +260,16 @@ SendText=()=>{
             {/*Open ended study session Button*/}
             <TouchableOpacity
               style = {styles.submitButton}
-              onPress = {() => {this.makeOpenEndedList();
-                this.setState({processTime:false});
-               }}
+              onPress={() => navigate('OpenendedTimer')}
               >
                 <Text style={styles.submitButtonText}>Open-ended Sesh</Text>
             </TouchableOpacity>{/*NEW*/}
 
-            {(this.state.list == -5) &&
-              <Text style={styles.schedule}>Let's start with 20 minutes of studying, then see how it goes :)</Text>
-            }
 
-            {/*Go to timer Button*/}
-            {(
-              (this.state.list == -5) ||
-              (this.state.processTime && this.state.timeChosen &&
+            {/*Go to timer regular Button*/}
+            {(this.state.processTime && this.state.timeChosen &&
                 (this.state.select ||
-                  (this.state.breakD1 && this.state.breakD2)))) &&
+                  (this.state.breakD1 && this.state.breakD2))) &&
 
               /*<GoToTimer state = {this.state}/>*/
               <View style={{paddingTop:20}}>

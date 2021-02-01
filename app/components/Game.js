@@ -27,7 +27,7 @@ const InstructionsOverlay = () => {
           <Swiper style={styles.wrapper} showsButtons={false}>
             <View style={styles.slide}>
             <Image source={require("../assets/logo.png")} style={{ height:'30%', width:'40%', marginBottom:30}} />
-              <Text style={styles.text}>Welcome to StudyTricks' Connect All!</Text>
+              <Text style={styles.text}>Welcome to StudyTricks Connect All!</Text>
             </View>
             <View style={styles.slide}>
               <Text style={styles.text}>Start by connecting the highlighted dots by drawing a line between them.</Text>
@@ -98,13 +98,14 @@ export default class Game extends React.Component{
     static navigationOptions = { headerShown: false ,title: 'Game'};
     state={
     lines:[],
-    fontsLoaded: false};
+    fontsLoaded: false,
+    strikeNum:0};
 
     async _loadFontsAsync() {
       await Font.loadAsync(customFonts);
       this.setState({ fontsLoaded: true });
     }
-    
+
     componentDidMount() {
       this._loadFontsAsync();
     }
@@ -136,14 +137,16 @@ export default class Game extends React.Component{
           );
 
 
- 
+
           if (this.state.fontsLoaded) {return(
 <>
 
 
           <ImageBackground source={require("../assets/background.png")} style={{ resizeMode: 'cover', width: '100%', height: '100%' }}>
+
           
             <IntroOverlay/>
+
               <RNDraw
               containerStyle={{
                 backgroundColor: 'transparent',
@@ -157,18 +160,23 @@ export default class Game extends React.Component{
                   next={(next) => {this._next = next}}
                   color={'white'}
                   strokeWidth={4}
-                  onChangeStrokes={(strokes) => {//this is good for debugging at the front-end
+                  onChangeStrokes={(strokes,strikes) => {//this is good for debugging at the front-end
                      // this.state.lines.push(strokes[strokes.length-1].props.d);
                      // console.log(this.state.lines);
                      // if(this.checkLine()){
                      //    console.log("LINES detected");
                      // }
+                     this.state.strikeNum=strikes;
+                     this.setState({strikeNum:strikes})
+                     console.log(this.state.strikeNum);
                   }
                }
                 />
 
-            
-            
+<Text>Strikes:{this.state.strikeNum}</Text>
+            {/*<IntroOverlay/>*/}
+
+
             <View style={{ flexDirection: "row" , backgroundColor: "transparent", justifyContent: "space-evenly"}}>
                 <TouchableOpacity onPress={this.rewind}>
                   <Icon name="undo" style= {styles.button} color = {'white'} size={20}/>
@@ -183,7 +191,7 @@ export default class Game extends React.Component{
               <TouchableOpacity style = {styles.skipButton} onPress={createTwoButtonAlert}>
                 <Text style = {styles.skipButtonText}>Move Onto Timer</Text>
               </TouchableOpacity>
-    
+
 </ImageBackground>
 
 
