@@ -22,10 +22,6 @@ const InstructionsOverlay = () => {
 
   return (
     <View>
-      <TouchableOpacity onPress={toggleOverlay}>
-        <Icon name="question" style= {styles.button}   color = {'white'} size={20}/>
-      </TouchableOpacity>
-
       <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
         <View style={{ height: 300 , width: 300}}>
           <Swiper style={styles.wrapper} showsButtons={false}>
@@ -57,7 +53,7 @@ const InstructionsOverlay = () => {
 };
 
 const IntroOverlay = () => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -65,6 +61,14 @@ const IntroOverlay = () => {
 
   return (
     <View>
+      <Header
+           centerComponent={<TouchableOpacity onPress={toggleOverlay}><Image source={require("../assets/logo.png")} style ={{  resizeMode: 'contain', height:100}}/></TouchableOpacity>}           
+           containerStyle={{
+             height:95,
+             backgroundColor:'transparent',
+             borderBottomColor:'transparent'
+            }}
+          />
       <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
         <View style={{ height: 300 , width: 300}}>
           <Swiper style={styles.wrapper} showsButtons={false}>
@@ -139,14 +143,9 @@ export default class Game extends React.Component{
 
 
           <ImageBackground source={require("../assets/background.png")} style={{ resizeMode: 'cover', width: '100%', height: '100%' }}>
-          <Header
-           centerComponent={<Image source={require("../assets/logo.png")} style={{ height:'90%', width:'40%'}} />}
-           containerStyle={{
-             height:95,
-             backgroundColor:'transparent',
-             borderBottomColor:'transparent'
-            }}
-          />
+
+          
+            <IntroOverlay/>
 
               <RNDraw
               containerStyle={{
@@ -173,8 +172,10 @@ export default class Game extends React.Component{
                   }
                }
                 />
+
 <Text>Strikes:{this.state.strikeNum}</Text>
             {/*<IntroOverlay/>*/}
+
 
             <View style={{ flexDirection: "row" , backgroundColor: "transparent", justifyContent: "space-evenly"}}>
                 <TouchableOpacity onPress={this.rewind}>
@@ -188,7 +189,7 @@ export default class Game extends React.Component{
               </View>
 
               <TouchableOpacity style = {styles.skipButton} onPress={createTwoButtonAlert}>
-                <Text style = {styles.skipButtonText}>Skip Game</Text>
+                <Text style = {styles.skipButtonText}>Move Onto Timer</Text>
               </TouchableOpacity>
 
 </ImageBackground>
@@ -239,7 +240,7 @@ const styles = StyleSheet.create({
    borderWidth:1,
    borderColor:'white',
    borderRadius:15,
-   width:'30%',
+   width:'40%',
    alignSelf:'center',
    justifyContent:'center',
    margin:5
