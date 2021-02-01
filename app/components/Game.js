@@ -190,7 +190,7 @@ export default class Game extends React.Component{
                 <InstructionsOverlay/>
               </View>
 
-              <TouchableOpacity style = {styles.skipButton} onPress={createTwoButtonAlert}>
+              <TouchableOpacity style = {styles.skipButton} onPress={() => navigate('Questionnaire')}>
                 <Text style = {styles.skipButtonText}>Move Onto Timer</Text>
               </TouchableOpacity>
 

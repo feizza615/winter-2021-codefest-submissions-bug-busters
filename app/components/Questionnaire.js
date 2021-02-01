@@ -256,18 +256,8 @@ SendText=()=>{
             {this.state.processTime &&
               <Text style={styles.schedule}> <this.SendText/></Text>
             }
-
-            {/*Open ended study session Button*/}
-            <TouchableOpacity
-              style = {styles.submitButton}
-              onPress={() => navigate('OpenendedTimer')}
-              >
-                <Text style={styles.submitButtonText}>Open-ended Sesh</Text>
-            </TouchableOpacity>{/*NEW*/}
-
-
-            {/*Go to timer regular Button*/}
-            {(this.state.processTime && this.state.timeChosen &&
+             {/*Go to timer regular Button*/}
+             {(this.state.processTime && this.state.timeChosen &&
                 (this.state.select ||
                   (this.state.breakD1 && this.state.breakD2))) &&
 
@@ -282,6 +272,17 @@ SendText=()=>{
               </View>
             }
 
+            {/*Open ended study session Button*/}
+            <View style={{paddingTop:20}}>
+            <TouchableOpacity
+              style = {styles.submitButton}
+              onPress={() => navigate('OpenendedTimer')}
+              >
+                <Text style={styles.submitButtonText}>Open-ended Sesh</Text>
+            </TouchableOpacity>{/*NEW*/}
+            </View>
+
+           
           </ScrollView>
          </ImageBackground>
        </>
