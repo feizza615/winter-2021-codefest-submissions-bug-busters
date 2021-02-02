@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
-import { ImageBackground, Image, TouchableOpacity, StyleSheet, Button, Text, View, Alert } from 'react-native';
+import { ImageBackground, Image, TouchableOpacity, StyleSheet, ScrollView, Button, Text, View, Alert } from 'react-native';
 import { registerRootComponent } from 'expo';
 import RNDraw from 'rn-draw'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -22,6 +22,7 @@ const InstructionsOverlay = () => {
 
   return (
     <View>
+      <ScrollView>
       <TouchableOpacity onPress={toggleOverlay}>
         <Icon name="question" style= {styles.button}   color = {'white'} size={20}/>
       </TouchableOpacity>
@@ -51,7 +52,7 @@ const InstructionsOverlay = () => {
           </Swiper>
         </View>
       </Overlay>
-
+      </ScrollView>
     </View>
   );
 };
