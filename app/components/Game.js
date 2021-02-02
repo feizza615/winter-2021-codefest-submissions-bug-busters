@@ -22,7 +22,6 @@ const InstructionsOverlay = () => {
 
   return (
     <View>
-      <ScrollView>
       <TouchableOpacity onPress={toggleOverlay}>
         <Icon name="question" style= {styles.button}   color = {'white'} size={20}/>
       </TouchableOpacity>
@@ -52,7 +51,7 @@ const InstructionsOverlay = () => {
           </Swiper>
         </View>
       </Overlay>
-      </ScrollView>
+  
     </View>
   );
 };
@@ -146,9 +145,9 @@ export default class Game extends React.Component{
           if (this.state.fontsLoaded) {return(
 <>
 
-
+        
           <ImageBackground source={require("../assets/background.png")} style={{ resizeMode: 'cover', width: '100%', height: '100%' }}>
-
+            
           
             <IntroOverlay/>
 
@@ -194,7 +193,7 @@ export default class Game extends React.Component{
               <TouchableOpacity style = {styles.skipButton} onPress={() => navigate('Questionnaire')}>
                 <Text style = {styles.skipButtonText}>Move Onto Timer</Text>
               </TouchableOpacity>
-
+    
 </ImageBackground>
 
 
