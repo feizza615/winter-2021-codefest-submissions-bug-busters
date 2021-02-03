@@ -11,7 +11,7 @@
 - [ ] We are a beginner group (only completed CSCI 12700)
 
 ## Video Walkthrough:
-Here is a walkthrough of our app, StudyTricks:
+
 <img src='timer.gif' title='walkthrough'/>
 
 # General Info
