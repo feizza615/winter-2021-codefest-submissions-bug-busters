@@ -10,6 +10,10 @@
 - [X] We are a Daedalus Google Mentorship group
 - [ ] We are a beginner group (only completed CSCI 12700)
 
+## Video Walkthrough:
+Here is a walkthrough of our app, StudyTricks:
+<img src='timer.gif' title='walkthrough'/>
+
 # General Info
 ## Theme: Create a Passion Project - Make something you've always wanted to build!
 Think of something you've always wanted to make and bring to life, and do it! To make it easier for our judges and to have some form of organization, all we ask is to try to keep it within one of these categories:
